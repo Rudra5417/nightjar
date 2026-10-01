@@ -119,6 +119,13 @@ final class AppModel: ObservableObject {
     @Published private(set) var detections: [String: [Detection]] = [:]
     /// Devices judged to be travelling with you.
     @Published private(set) var followers: [Follower] = []
+    /// The session tag, so the two halves of an A/B walk are labelled in the log itself.
+    @Published var sessionMode: SessionLog.Mode {
+        didSet {
+            log.setMode(sessionMode)
+            UserDefaults.standard.set(sessionMode.rawValue, forKey: "nightjar.session.mode")
+        }
+    }
     @Published var filter: Filter = .named
     @Published var selectedKey: String?
 
@@ -131,6 +138,11 @@ final class AppModel: ObservableObject {
     private var alertedFollowers: Set<String> = []
 
     init() {
+        let stored = UserDefaults.standard.string(forKey: "nightjar.session.mode")
+            .flatMap(SessionLog.Mode.init(rawValue:)) ?? .phoneOnly
+        sessionMode = stored
+        // Property observers do not fire during init, so push the stored mode into the log here.
+        log.setMode(stored)
         scanner.onObservation = { [weak self] obs in self?.record(obs) }
     }
 
@@ -290,6 +302,38 @@ final class AppModel: ObservableObject {
 
     var mutedCount: Int { mute.count }
     var mutedSummary: String { mute.summary }
+
+    // MARK: - phone versus node
+    //
+    // The live half of the A/B harness. The comparison tool works on finished logs; these numbers
+    // say what the node is contributing while you are still walking.
+
+    var phoneRadios: Int { scanner.radios.values.filter { $0.sourceNodeId == nil }.count }
+    var nodeRadios: Int { scanner.radios.values.filter { $0.sourceNodeId != nil }.count }
+    var phoneNamed: Int {
+        scanner.radios.values.filter { $0.sourceNodeId == nil && hitsByKey[$0.identityKey] != nil }.count
+    }
+    var nodeNamed: Int {
+        scanner.radios.values.filter { $0.sourceNodeId != nil && hitsByKey[$0.identityKey] != nil }.count
+    }
+
+    var sourceSplit: String {
+        nodeRadios > 0 ? "phone \(phoneRadios) · node \(nodeRadios)" : "phone only"
+    }
+
+    /// Plain-language read on whether the node is earning its place on this walk.
+    var nodeVerdict: String {
+        guard nodeRadios > 0 else {
+            return "No node heard yet. Power it up and it will appear here."
+        }
+        guard nodeNamed > 0 else {
+            return "The node has heard \(nodeRadios) radios but named none of them."
+        }
+        let ratio = phoneNamed > 0
+            ? String(format: "%.1f×", Double(nodeNamed) / Double(phoneNamed))
+            : "no baseline"
+        return "Node has named \(nodeNamed) radios against the phone's \(phoneNamed) (\(ratio))."
+    }
 
     func clear() {
         hitsByKey.removeAll()

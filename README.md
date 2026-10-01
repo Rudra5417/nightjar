@@ -12,8 +12,11 @@ Passive and local. No account, no server, no ads. Nothing leaves the phone.
 |---|---|
 | BLE observation with payload signature matching | **working** — name / service UUID / manufacturer data / service data rules |
 | Live list, class chips, RSSI strength, session log | **working** |
-| Catalog engine ported to Swift, runs on iOS | **working** — 21 tests, all green |
+| Catalog engine ported to Swift, runs on iOS | **working** — 46 tests, all green |
 | Live / Map split with a screener map and geotagged detections | **working** — pins are places *you* stood, never a computed device position |
+| Follower alert (co-travel detection) | **working** — 3+ places over 5+ minutes, still nearby, opt-in local notification |
+| Muting your own devices | **working** — muted radios leave the list, the map and the follower engine |
+| A/B harness: phone alone versus phone + node | **working** — session tagging, live split, `nightjar-probe --ab` |
 | Sensor node link over BLE GATT (Wi-Fi APs, real MACs, 5 GHz) | **working code, unflashed** — firmware compiles for C5/C6/S3/classic |
 | iOS app builds for simulator and device | **working** |
 | Background scanning via Live Activity (iOS 26) | **built** — activity starts and the system accepts it; whether it grants background scan privileges is unverified until it runs on a real phone |
@@ -26,6 +29,17 @@ on the map are the positions **you** occupied when a device was heard, not a gue
 the device. Tapping a radio shows every place you heard it plus a warm/cold trend from the recent
 readings. Standing still produces one cluster — that is the honest answer, not a bug. Real
 position fixing needs the two or three nodes in `firmware/`.
+
+### About the follower alert
+
+A device heard at three or more distinct places (clustered at 60 m, so pacing around one building
+is one place), spread over at least five minutes, and still being heard now, is travelling with
+you. Everything else — a neighbour's television, a router, a camera on a pole — is heard in one
+place and is never flagged. Most of the tests for this are about devices that must **not** be
+flagged, because a false "something is following you" is worse than a missed one.
+
+One limit worth knowing: iOS's per-app UUID can change if a device rotates its address, so a
+follower can appear as two identities. That under-counts. It does not invent followers.
 
 ## The honest coverage story
 
@@ -40,6 +54,30 @@ phone + node   6962 / 6962 rules usable  (100.0%)  244/244 fleets reachable
 ```
 
 That number is computed from the pack, not asserted: `Sources/nightjar-probe` prints it.
+
+## Does the node earn its place? Walk it twice
+
+The coverage number above is what the *pack* allows. Whether the node actually finds anything on
+your street is a different question, and the only honest way to answer it is to walk the same
+route twice.
+
+1. In the app's ⓘ sheet, tag the walk **Phone only** and walk the route.
+2. Tag the next walk **Phone + node**, power the node up, walk the same route again.
+
+Session files are named `sit-<timestamp>-phone.jsonl` and `sit-<timestamp>-node.jsonl`, and every
+line carries its mode, so the two halves stay labelled months later. Then, on the Mac:
+
+```bash
+swift run nightjar-probe --ab sit-...-phone.jsonl sit-...-node.jsonl
+```
+
+It reports what the node added — radios, named radios, fleets, classes, bands — and says plainly
+when the answer is "nothing you could name".
+
+**What it will not claim.** iOS gives the app a per-app UUID and the node a real MAC, so one
+physical device has two identities and BLE results **cannot** be matched across the two sources.
+Overlap is measured on names, counts and fleets. The union of the two radio counts is not a device
+count — it is an upper bound.
 
 ## Layout
 
@@ -58,6 +96,9 @@ project.yml              XcodeGen spec — the source of truth for the Xcode pro
 # engine + tests (no Xcode project needed)
 swift test
 swift run nightjar-probe <path/to/fieldwatch-signatures-v2.json> node-session.sample.jsonl
+swift run nightjar-probe --pins <session.jsonl>                  # how a session will be drawn on the map
+swift run nightjar-probe --ab <baseline.jsonl> <with-node.jsonl> # the same walk, twice
+swift run nightjar-probe --profile <SomeApp.app>                 # sideload expiry, no Xcode needed
 
 # app
 xcodegen generate                  # regenerates Nightjar.xcodeproj from project.yml

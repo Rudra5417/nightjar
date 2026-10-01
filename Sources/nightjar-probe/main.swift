@@ -75,6 +75,54 @@ if args.count > 2 && args[1] == "--pins" {
     exit(0)
 }
 
+// The same walk twice — phone alone, then phone plus a sensor node:
+//   nightjar-probe --ab baseline.jsonl with-node.jsonl
+if args.count > 3 && args[1] == "--ab" {
+    let beforePath = args[2], afterPath = args[3]
+    let before = SessionTally(frames: SessionLogReader.frames(atPath: beforePath))
+    let after = SessionTally(frames: SessionLogReader.frames(atPath: afterPath))
+    guard before.frames > 0, after.frames > 0 else {
+        FileHandle.standardError.write(Data("one of the logs is empty or unreadable\n".utf8))
+        exit(2)
+    }
+    let diff = SessionComparison(before: before, after: after)
+
+    func headline(_ tag: String, _ path: String, _ tally: SessionTally) {
+        line("\(tag)  \((path as NSString).lastPathComponent)")
+        line("   mode \(tally.modeLabel) · \(tally.frames) frames · \(tally.radios.count) radios · \(tally.named.count) named · \(tally.places) places")
+    }
+    headline("A", beforePath, before)
+    headline("B", afterPath, after)
+    line("")
+    line("what the node added")
+    line("   radios     \(diff.radioDelta >= 0 ? "+" : "")\(diff.radioDelta)")
+    line("   named      \(diff.namedDelta >= 0 ? "+" : "")\(diff.namedDelta)   (\(diff.namedMultiple) baseline)")
+    if !diff.newFleets.isEmpty {
+        line("   fleets     +\(diff.newFleets.count)")
+        for fleet in diff.newFleets.prefix(12) { line("                \(fleet)") }
+    }
+    if !diff.newClasses.isEmpty { line("   classes    \(diff.newClasses.joined(separator: ", "))") }
+    if !diff.newBands.isEmpty { line("   bands      \(diff.newBands.joined(separator: ", ")) GHz") }
+    if !diff.newNames.isEmpty {
+        line("")
+        line("named in B, never heard by A")
+        for name in diff.newNames.prefix(20) { line("   \(name)") }
+        if diff.newNames.count > 20 { line("   … and \(diff.newNames.count - 20) more") }
+    }
+    line("")
+    line("per source in B")
+    for (source, tally) in after.sources.sorted(by: { $0.value.radios.count > $1.value.radios.count }) {
+        let pad = source.padding(toLength: 10, withPad: " ", startingAt: 0)
+        line("   \(pad) \(tally.radios.count) radios · \(tally.named.count) named · \(tally.frames) frames")
+    }
+    line("")
+    line("verdict: \(diff.verdict)")
+    line("")
+    line("note: BLE identities cannot be matched across sources — iOS gives this app a per-app UUID")
+    line("      and the node a real MAC. Overlap is measured on names, counts and fleets, not identity.")
+    exit(0)
+}
+
 let catalogPath = args.count > 1
     ? args[1]
     : "\(NSHomeDirectory())/.hermes/cache/scratch/fw/Fieldwatch/dist/fieldwatch-signatures-v2.json"

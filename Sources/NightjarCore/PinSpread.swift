@@ -9,6 +9,30 @@ import CoreLocation
 /// so on screen — a map that silently moves pins is worse than a crowded one.
 public enum PinSpread {
 
+    /// Groups indices whose coordinates sit within `minSeparationMeters` of each other, greedily
+    /// and in first-seen order. Exposed because the session tally needs the same notion of "one
+    /// place" that the map draws.
+    public static func groups(_ coords: [CLLocationCoordinate2D],
+                             minSeparationMeters: Double = 10) -> [[Int]] {
+        var groups: [[Int]] = []
+        for (index, coordinate) in coords.enumerated() {
+            let here = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            if let existing = groups.firstIndex(where: { group in
+                group.contains { member in
+                    let there = CLLocation(latitude: coords[member].latitude,
+                                           longitude: coords[member].longitude)
+                    return here.distance(from: there) < minSeparationMeters
+                }
+            }) {
+                groups[existing].append(index)
+            } else {
+                groups.append([index])
+            }
+        }
+        return groups
+    }
+
+
     /// Greedy grouping: any coordinate within `minSeparationMeters` of a member joins that group.
     /// Groups of one are left exactly where they were.
     public static func spread(_ coordinates: [CLLocationCoordinate2D],

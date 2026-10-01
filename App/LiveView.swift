@@ -64,7 +64,7 @@ struct LiveView: View {
                         .foregroundStyle(.white.opacity(0.5))
                 }
             }
-            Text("\(model.namedCount) named · \(model.log.lines) frames · \(model.location.statusLabel)")
+            Text("\(model.namedCount) named · \(model.log.lines) frames · \(model.sourceSplit)")
                 .font(.system(size: 11, design: .monospaced))
                 .foregroundStyle(.white.opacity(0.4))
         }
@@ -277,12 +277,31 @@ struct LiveView: View {
     private var infoSheet: some View {
         NavigationStack {
             List {
-                Section("session") {
-                    row("name", model.log.sessionName)
+                Section("this walk") {
+                    Picker("mode", selection: $model.sessionMode) {
+                        ForEach(SessionLog.Mode.allCases) { Text($0.label).tag($0) }
+                    }
+                    .pickerStyle(.segmented)
+                    Text(model.sessionMode.blurb)
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                    row("session", model.log.sessionName)
+                    row("tagged", model.log.mode.rawValue)
+                    row("location", model.location.statusLabel)
                     row("frames", "\(model.log.lines)")
                     row("radios heard", "\(model.scanner.radios.count)")
                     row("named by catalog", "\(model.namedCount)")
                     row("places mapped", "\(model.detections.values.reduce(0) { $0 + $1.count })")
+                }
+                Section("phone vs node") {
+                    row("phone", "\(model.phoneRadios) radios · \(model.phoneNamed) named")
+                    row("node", "\(model.nodeRadios) radios · \(model.nodeNamed) named")
+                    Text(model.nodeVerdict)
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                    Text("Walk the same route twice — once tagged phone only, once with the node powered up — then compare the two logs on the Mac with `nightjar-probe --ab`.")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
                 }
                 Section("catalog") {
                     row("source", model.catalog.source)
