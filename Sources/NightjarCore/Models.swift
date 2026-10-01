@@ -293,6 +293,16 @@ public struct Observation: Sendable {
         return true
     }
 
+    /// CoreBluetooth reports 127 when it has no signal strength reading for a peripheral
+    /// (commonly for a device already connected to something else). It is a sentinel, not a
+    /// measurement — 127 dBm does not exist — so it must never be logged or sorted as one.
+    public static let unknownRssi = 127
+
+    public var rssiIsKnown: Bool { rssi != Observation.unknownRssi && rssi <= 0 }
+
+    /// Sortable strength: unknown readings rank below every real one.
+    public var sortableRssi: Int { rssiIsKnown ? rssi : -999 }
+
     /// Stable-ish identity for a session. iOS gives no MAC, so this is what we have.
     public var identityKey: String {
         if let mac, !mac.isEmpty { return "\(kind.rawValue):\(mac)" }

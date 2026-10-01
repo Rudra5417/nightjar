@@ -120,7 +120,7 @@ struct LiveView: View {
                     .foregroundStyle(.white)
                     .lineLimit(1)
                 Spacer()
-                Text("\(row.observation.rssi) dBm")
+                Text(row.rssiLabel)
                     .font(.system(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(row.hits.isEmpty ? .white.opacity(0.5) : cyan)
             }

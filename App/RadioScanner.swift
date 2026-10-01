@@ -77,7 +77,8 @@ final class RadioScanner: NSObject, ObservableObject {
     private func ingest(_ obs: Observation) {
         let key = obs.identityKey
         if var existing = radios[key] {
-            existing.rssi = obs.rssi
+            // Keep the last real reading: 127 means "no reading this time", not a signal.
+            if obs.rssiIsKnown { existing.rssi = obs.rssi }
             existing.heardCount += 1
             existing.lastSeenMs = obs.lastSeenMs ?? existing.lastSeenMs
             if existing.name.isEmpty { existing.name = obs.name }

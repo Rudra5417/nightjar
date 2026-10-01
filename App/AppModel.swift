@@ -39,8 +39,13 @@ struct RadioRow: Identifiable {
     }
 
     var strength: Double {
-        // -100 dBm .. -30 dBm mapped to 0 .. 1
-        Double(max(0, min(1, (Double(observation.rssi) + 100) / 70)))
+        // -100 dBm .. -30 dBm mapped to 0 .. 1; unknown readings get no bar at all.
+        guard observation.rssiIsKnown else { return 0 }
+        return Double(max(0, min(1, (Double(observation.rssi) + 100) / 70)))
+    }
+
+    var rssiLabel: String {
+        observation.rssiIsKnown ? "\(observation.rssi) dBm" : "no reading"
     }
 }
 
@@ -94,7 +99,7 @@ final class AppModel: ObservableObject {
         .filter { !showOnlyNamed || !$0.hits.isEmpty }
         .sorted { lhs, rhs in
             if lhs.hits.isEmpty != rhs.hits.isEmpty { return !lhs.hits.isEmpty }
-            return lhs.observation.rssi > rhs.observation.rssi
+            return lhs.observation.sortableRssi > rhs.observation.sortableRssi
         }
     }
 

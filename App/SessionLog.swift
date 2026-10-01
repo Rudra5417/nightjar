@@ -36,7 +36,7 @@ final class SessionLog: ObservableObject {
             "addr": obs.mac ?? obs.platformId ?? "",
             "mac": obs.mac ?? NSNull(),
             "name": obs.name,
-            "rssi": obs.rssi,
+            "rssi": obs.rssiIsKnown ? obs.rssi as Any : NSNull(),
             "band": obs.band ?? NSNull(),
             "ch": obs.channel ?? NSNull(),
             "addr_type": obs.addressType ?? NSNull(),
