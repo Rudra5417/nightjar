@@ -235,6 +235,14 @@ struct ScreenerMap: View {
                     .foregroundStyle(.white)
                     .lineLimit(1)
                 Spacer()
+                Button {
+                    model.muteDevice(row.id, title: row.title)
+                } label: {
+                    Image(systemName: "bell.slash")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.6))
+                }
+                .buttonStyle(.plain)
                 Text(row.rssiLabel == "—" ? "no reading" : "\(row.rssiLabel) dBm")
                     .font(.system(size: 13, weight: .semibold, design: .monospaced))
                     .foregroundStyle(row.hits.isEmpty ? .white.opacity(0.6) : cyan)

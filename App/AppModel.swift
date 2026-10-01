@@ -86,6 +86,17 @@ enum Trend {
     }
 }
 
+/// A device the co-travel engine believes is moving with you, with its evidence attached.
+struct Follower: Identifiable {
+    let id: String
+    let title: String
+    let verdict: CoTravelVerdict
+
+    var evidence: String {
+        "\(verdict.places) places · \(verdict.spanLabel) · \(verdict.sightings) sightings"
+    }
+}
+
 @MainActor
 final class AppModel: ObservableObject {
 
@@ -101,14 +112,23 @@ final class AppModel: ObservableObject {
     let reminder = ExpiryReminder()
     let activity = LiveActivityController()
     let location = LocationTracker()
+    let mute = MuteList()
+    let follow = FollowNotifier()
 
     @Published private(set) var rows: [RadioRow] = []
     @Published private(set) var detections: [String: [Detection]] = [:]
+    /// Devices judged to be travelling with you.
+    @Published private(set) var followers: [Follower] = []
     @Published var filter: Filter = .named
     @Published var selectedKey: String?
 
+    private let coTravel = CoTravelEngine()
     private var hitsByKey: [String: [FleetHit]] = [:]
     private var rssiHistory: [String: [Int]] = [:]
+    /// Verdicts are swept on a slow clock: the answer changes over minutes, not frames, and this
+    /// sits inside a path that runs thousands of times a minute.
+    private var lastFollowSweep = Date.distantPast
+    private var alertedFollowers: Set<String> = []
 
     init() {
         scanner.onObservation = { [weak self] obs in self?.record(obs) }
@@ -123,6 +143,7 @@ final class AppModel: ObservableObject {
         location.start()
         scanner.start()
         activity.start(catalogSource: catalog.source)
+        Task { await follow.refreshAuthorization() }
     }
 
     func stopListening() {
@@ -145,6 +166,7 @@ final class AppModel: ObservableObject {
         }
 
         noteLocation(for: key, rssi: obs.rssi)
+        noteMovement(for: key, rssi: obs.rssi)
         log.append(obs, hits: hits, coordinate: location.current?.coordinate)
         refresh()
 
@@ -173,10 +195,12 @@ final class AppModel: ObservableObject {
     // MARK: - derived
 
     func refresh() {
-        rows = scanner.radios.values.map { obs in
-            RadioRow(id: obs.identityKey, observation: obs, hits: hitsByKey[obs.identityKey] ?? [])
-        }
-        .filter { filter == .all || !$0.hits.isEmpty }
+        rows = scanner.radios.values
+            .filter { !mute.contains($0.identityKey) }
+            .map { obs in
+                RadioRow(id: obs.identityKey, observation: obs, hits: hitsByKey[obs.identityKey] ?? [])
+            }
+            .filter { filter == .all || !$0.hits.isEmpty }
         .sorted { lhs, rhs in
             if lhs.hits.isEmpty != rhs.hits.isEmpty { return !lhs.hits.isEmpty }
             return lhs.observation.sortableRssi > rhs.observation.sortableRssi
@@ -201,10 +225,80 @@ final class AppModel: ObservableObject {
         return .steady
     }
 
+    // MARK: - following
+
+    /// Feed the co-travel engine the same sightings the map gets, then sweep for verdicts.
+    private func noteMovement(for key: String, rssi: Int) {
+        guard !mute.contains(key),
+              rssi != Observation.unknownRssi, rssi <= 0,
+              let coordinate = location.current?.coordinate else { return }
+        coTravel.observe(CoTravelSighting(key: key, coordinate: coordinate, at: Date(), rssi: rssi))
+
+        guard Date().timeIntervalSince(lastFollowSweep) >= 5 else { return }
+        lastFollowSweep = Date()
+        sweepFollowers()
+    }
+
+    private func sweepFollowers() {
+        followers = coTravel.followers().map { verdict in
+            Follower(id: verdict.key, title: title(for: verdict.key), verdict: verdict)
+        }
+
+        // Alert once per device per trip. A follower that stops travelling with you is forgotten
+        // so that a later trip can alert again — the second time matters as much as the first.
+        for follower in followers where !alertedFollowers.contains(follower.id) {
+            let posted = follow.notify(title: follower.title,
+                                       places: follower.verdict.places,
+                                       spanLabel: follower.verdict.spanLabel,
+                                       key: follower.id)
+            if posted || !follow.enabled { alertedFollowers.insert(follower.id) }
+        }
+        for key in alertedFollowers where !followers.contains(where: { $0.id == key }) {
+            if coTravel.verdict(for: key)?.isFollowing != true {
+                alertedFollowers.remove(key)
+                follow.forget(key)
+            }
+        }
+    }
+
+    private func title(for key: String) -> String {
+        guard let obs = scanner.radios[key] else { return "unknown device" }
+        return RadioRow(id: key, observation: obs, hits: hitsByKey[key] ?? []).title
+    }
+
+    /// The device you are muting is usually the one you are looking at, so drop it from the
+    /// verdict list immediately rather than waiting for its track to go stale.
+    func muteDevice(_ key: String, title: String) {
+        mute.mute(key, title: title)
+        followers.removeAll { $0.id == key }
+        alertedFollowers.remove(key)
+        follow.forget(key)
+        if selectedKey == key { selectedKey = nil }
+        refresh()
+    }
+
+    /// Turning alerts on is also what asks for permission.
+    func setFollowAlerts(_ on: Bool) async {
+        await follow.setEnabled(on)
+        objectWillChange.send()
+    }
+
+    func unmuteAll() {
+        mute.unmuteAll()
+        refresh()
+    }
+
+    var mutedCount: Int { mute.count }
+    var mutedSummary: String { mute.summary }
+
     func clear() {
         hitsByKey.removeAll()
         rssiHistory.removeAll()
         detections.removeAll()
+        coTravel.reset()
+        followers = []
+        alertedFollowers.removeAll()
+        lastFollowSweep = .distantPast
         rows = []
     }
 }

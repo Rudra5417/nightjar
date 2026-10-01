@@ -18,6 +18,7 @@ struct LiveView: View {
 
     private let cyan = Color(red: 0.176, green: 0.831, blue: 0.969)   // #2dd4f7
     private let violet = Color(red: 0.545, green: 0.361, blue: 0.965) // #8b5cf6
+    private let amber = Color(red: 1.0, green: 0.62, blue: 0.15)
     private let ink = Color(red: 0.04, green: 0.05, blue: 0.07)
 
     var body: some View {
@@ -100,9 +101,17 @@ struct LiveView: View {
 
             ScrollView {
                 LazyVStack(spacing: 8) {
+                    if !model.followers.isEmpty { followingSection }
                     ForEach(model.rows) { row in
                         Button { open(row) } label: { rowView(row) }
                             .buttonStyle(.plain)
+                            .contextMenu {
+                                Button {
+                                    model.muteDevice(row.id, title: row.title)
+                                } label: {
+                                    Label("Mute this device", systemImage: "bell.slash")
+                                }
+                            }
                     }
                     if model.rows.isEmpty {
                         Text(model.filter == .named
@@ -116,6 +125,55 @@ struct LiveView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 12)
+            }
+        }
+    }
+
+    /// The one thing on this screen that is a conclusion rather than a reading.
+    private var followingSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Image(systemName: "figure.walk.motion")
+                    .font(.system(size: 12, weight: .bold))
+                Text(model.followers.count == 1
+                     ? "1 DEVICE IS TRAVELLING WITH YOU"
+                     : "\(model.followers.count) DEVICES ARE TRAVELLING WITH YOU")
+                    .font(.system(size: 11, weight: .black, design: .monospaced))
+            }
+            .foregroundStyle(amber)
+
+            ForEach(model.followers) { follower in
+                HStack(alignment: .top, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(follower.title)
+                            .font(.system(size: 15, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+                        Text(follower.evidence)
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundStyle(.white.opacity(0.65))
+                        Text("heard where you were, over and over — not a fixed device")
+                            .font(.system(size: 10))
+                            .foregroundStyle(.white.opacity(0.4))
+                    }
+                    Spacer()
+                    Button {
+                        model.muteDevice(follower.id, title: follower.title)
+                    } label: {
+                        Image(systemName: "bell.slash")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(.white.opacity(0.75))
+                            .padding(7)
+                            .background(Circle().fill(.white.opacity(0.1)))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(12)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(amber.opacity(0.13))
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(amber.opacity(0.45), lineWidth: 1))
+                )
             }
         }
     }
@@ -231,6 +289,20 @@ struct LiveView: View {
                     row("fleets", "\(model.catalog.fleets)")
                     row("rules", "\(model.catalog.rules)")
                     row("usable phone-only", "\(model.catalog.iosUsableRules) of \(model.catalog.rules)")
+                }
+                Section("following me") {
+                    Toggle("Alert me if something follows me", isOn: Binding(
+                        get: { model.follow.enabled },
+                        set: { on in Task { await model.setFollowAlerts(on) } }))
+                    row("notifications", model.follow.summary)
+                    row("travelling with you", "\(model.followers.count)")
+                    row("muted devices", "\(model.mutedCount)")
+                    if model.mutedCount > 0 {
+                        Text(model.mutedSummary)
+                            .font(.system(size: 11))
+                            .foregroundStyle(.secondary)
+                        Button("Unmute everything") { model.unmuteAll() }
+                    }
                 }
                 Section("background scanning") {
                     row("live activity", activity.summary)
