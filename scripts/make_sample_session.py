@@ -39,7 +39,7 @@ def main():
 
     frames = []
     frames.append({"t": "node", "id": "NODE-01", "fw": "0.1.0", "chip": "esp32-c5",
-                   "batt": 84, "lat": 34.0195, "lon": -118.4912, "uptime_ms": 41200})
+                   "batt": 84, "lat": 10.0, "lon": 20.0, "uptime_ms": 41200})
 
     # --- Wi-Fi access points the iPhone can never see -------------------------
     # OUI straight out of the pack, so these hit real catalog rules.

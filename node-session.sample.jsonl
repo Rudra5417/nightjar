@@ -1,4 +1,4 @@
-{"t": "node", "id": "NODE-01", "fw": "0.1.0", "chip": "esp32-c5", "batt": 84, "lat": 34.0195, "lon": -118.4912, "uptime_ms": 41200}
+{"t": "node", "id": "NODE-01", "fw": "0.1.0", "chip": "esp32-c5", "batt": 84, "lat": 10.0, "lon": 20.0, "uptime_ms": 41200}
 {"t": "ap", "node": "NODE-01", "bssid": "B4:1E:52:11:22:33", "ssid": "Flock-4C21AB", "rssi": -61, "ch": 6, "band": "2.4", "auth": "WPA2", "hidden": false, "ie_ouis": ["000FAC", "0050F2", "FA0BBC"], "first_ms": 1200, "last_ms": 40200, "count": 3}
 {"t": "ap", "node": "NODE-01", "bssid": "00:25:DF:12:23:34", "ssid": "Axon-Fleet-01", "rssi": -74, "ch": 11, "band": "2.4", "auth": "WPA2", "hidden": false, "ie_ouis": ["0050F2"], "first_ms": 1290, "last_ms": 40200, "count": 4}
 {"t": "ap", "node": "NODE-01", "bssid": "00:0B:86:15:26:37", "ssid": "Aruba-AP-cafe", "rssi": -66, "ch": 36, "band": "5", "auth": "WPA2", "hidden": false, "ie_ouis": ["000B86"], "first_ms": 1560, "last_ms": 40200, "count": 7}
