@@ -1,5 +1,13 @@
 import Foundation
+import CoreLocation
 import NightjarCore
+
+extension Double {
+    func rounded(toPlaces places: Int) -> Double {
+        let scale = pow(10.0, Double(places))
+        return (self * scale).rounded() / scale
+    }
+}
 
 // nightjar-probe — load the real Fieldwatch catalog pack and classify synthetic radio
 // observations the way iOS would present them, then report what survives the move
@@ -29,6 +37,41 @@ if args.count > 2 && args[1] == "--profile" {
     line("created      \(profile.creationDate.map { iso.string(from: $0) } ?? "-")")
     line("expires      \(iso.string(from: profile.expirationDate))")
     line("remaining    \(profile.remainingLabel())\(profile.isExpired() ? "   <-- will not launch" : "")")
+    exit(0)
+}
+
+// Show how a session's detections will actually be drawn on the map:
+//   nightjar-probe --pins path/to/sit-....jsonl
+if args.count > 2 && args[1] == "--pins" {
+    let url = URL(fileURLWithPath: args[2])
+    guard let text = try? String(contentsOf: url, encoding: .utf8) else {
+        FileHandle.standardError.write(Data("cannot read \(url.path)\n".utf8))
+        exit(2)
+    }
+    var lastPoint: [String: (Double, Double)] = [:]
+    var frameCount = 0
+    var geotagged = 0
+    for line in text.split(separator: "\n") {
+        guard let data = line.data(using: .utf8),
+              let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { continue }
+        frameCount += 1
+        guard let lat = object["lat"] as? Double, let lon = object["lon"] as? Double else { continue }
+        geotagged += 1
+        let key = (object["addr"] as? String).flatMap { $0.isEmpty ? nil : $0 }
+            ?? (object["name"] as? String) ?? "?"
+        lastPoint[key] = (lat, lon)
+    }
+    let coords = lastPoint.values.map { CLLocationCoordinate2D(latitude: $0.0, longitude: $0.1) }
+    let spread = PinSpread.spread(coords)
+    let before = Set(coords.map { "\($0.latitude.rounded(toPlaces: 5))|\($0.longitude.rounded(toPlaces: 5))" }).count
+    let after = Set(spread.map { "\($0.latitude.rounded(toPlaces: 6))|\($0.longitude.rounded(toPlaces: 6))" }).count
+
+    line("frames            \(frameCount)")
+    line("geotagged         \(geotagged)")
+    line("devices located   \(coords.count)")
+    line("distinct places   \(before)   (before spreading)")
+    line("visible pins      \(after)   (after spreading)")
+    line("spread needed     \(PinSpread.needsSpreading(coords) ? "yes" : "no")")
     exit(0)
 }
 
