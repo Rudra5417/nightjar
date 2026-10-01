@@ -1,5 +1,5 @@
 import Foundation
-import EarshotCore
+import NightjarCore
 
 /// Loads the signature catalog and turns raw observations into named hits.
 ///
@@ -32,7 +32,7 @@ final class Catalog: ObservableObject {
         }
     }
 
-    /// A pack dropped into the app's Documents folder (Files app → On My iPhone → Earshot).
+    /// A pack dropped into the app's Documents folder (Files app → On My iPhone → Nightjar).
     private func importedPackURL() -> URL? {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let url = docs.appendingPathComponent("fieldwatch-signatures-v2.json")

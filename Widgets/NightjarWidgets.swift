@@ -1,7 +1,7 @@
 import ActivityKit
 import SwiftUI
 import WidgetKit
-import EarshotCore
+import NightjarCore
 
 /// Live Activity: the reason the phone keeps scanning with the screen off.
 ///
@@ -10,7 +10,7 @@ import EarshotCore
 /// reporting — while backgrounded. The activity is the price of admission, so it has to be
 /// useful in its own right: it shows what is being heard right now.
 @main
-struct EarshotWidgets: WidgetBundle {
+struct NightjarWidgets: WidgetBundle {
     var body: some Widget {
         ScanActivityWidget()
     }
@@ -69,7 +69,7 @@ private struct LockScreenView: View {
                 .font(.title3)
                 .foregroundStyle(.cyan)
             VStack(alignment: .leading, spacing: 3) {
-                Text("EARSHOT · \(context.state.radios) radios")
+                Text("NIGHTJAR · \(context.state.radios) radios")
                     .font(.caption.weight(.bold).monospaced())
                     .foregroundStyle(.cyan)
                 Text(context.state.strongest ?? "listening")

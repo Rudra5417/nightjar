@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-import EarshotCore
+import NightjarCore
 
 /// One row of the live list: what was heard, and what the catalog made of it.
 struct RadioRow: Identifiable {

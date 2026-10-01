@@ -1,4 +1,4 @@
-Earshot
+Nightjar
 Copyright (c) 2026 Rudra Patel. MIT License (see LICENSE).
 
 This product includes software and data developed by Off Grid Pete LLC:
@@ -10,7 +10,7 @@ This product includes software and data developed by Off Grid Pete LLC:
   Used here:
     - the signature rule vocabulary and matching semantics (OUI, MAC_PREFIX, NAME_CONTAINS,
       NAME_GLOB, SERVICE_UUID, SERVICE_DATA, MANUFACTURER_ID, MANUFACTURER_DATA, RADIO_KIND,
-      HIDDEN_SSID, VENDOR_IE_OUI), reimplemented in Swift under Sources/EarshotCore
+      HIDDEN_SSID, VENDOR_IE_OUI), reimplemented in Swift under Sources/NightjarCore
     - the catalog pack format and the stock catalog shipped at
       App/Resources/fieldwatch-signatures-v2.json (catalog version 88, 244 fleets, 6962 rules)
     - the payload decode spec format (offset/type/endian/bits/enum/when fields)
@@ -19,5 +19,5 @@ AndroidX, Kotlin and related libraries in the original project remain Apache-2.0
 Bluetooth SIG assigned-number tables embedded in the catalog pack are subject to those
 organizations' own terms.
 
-Earshot ships no code from Fieldwatch's Android application; only the catalog data and the
+Nightjar ships no code from Fieldwatch's Android application; only the catalog data and the
 rule semantics were carried across, with the matching engine rewritten in Swift.

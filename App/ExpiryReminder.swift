@@ -1,6 +1,6 @@
 import Foundation
 import UserNotifications
-import EarshotCore
+import NightjarCore
 
 /// Watches the build's own signature and nags before it lapses.
 ///
@@ -22,7 +22,7 @@ final class ExpiryReminder: ObservableObject {
     @Published private(set) var scheduled: [Date] = []
 
     private let center = UNUserNotificationCenter.current()
-    private let ids = ["earshot.expiry.48h", "earshot.expiry.12h"]
+    private let ids = ["nightjar.expiry.48h", "nightjar.expiry.12h"]
 
     init() {
         profile = ProvisioningProfile.load()
@@ -77,7 +77,7 @@ final class ExpiryReminder: ObservableObject {
             guard fireDate > now else { continue }
 
             let content = UNMutableNotificationContent()
-            content.title = "Earshot expires in \(Int(offset / 3600))h"
+            content.title = "Nightjar expires in \(Int(offset / 3600))h"
             content.body = "Plug the phone into your Mac and hit Run in Xcode to re-sign. "
                 + "Your session log is kept."
             content.sound = .default

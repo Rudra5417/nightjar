@@ -1,10 +1,10 @@
 import Foundation
-import EarshotCore
+import NightjarCore
 
 /// Append-only session log, one JSON object per line, in the app's Documents folder.
 ///
 /// Deliberately boring: newline JSON means a session is greppable, diffable, and can be
-/// replayed into `earshot-probe` on a Mac without any export tooling.
+/// replayed into `nightjar-probe` on a Mac without any export tooling.
 @MainActor
 final class SessionLog: ObservableObject {
 

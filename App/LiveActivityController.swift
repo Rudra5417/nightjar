@@ -1,6 +1,6 @@
 import ActivityKit
 import Foundation
-import EarshotCore
+import NightjarCore
 
 /// Starts and keeps the Live Activity alive.
 ///
@@ -28,7 +28,7 @@ final class LiveActivityController: ObservableObject {
         guard activity == nil else { return }
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             state = .unavailable
-            print("[earshot] live activities disabled in Settings")
+            print("[nightjar] live activities disabled in Settings")
             return
         }
         let now = Date()
@@ -41,10 +41,10 @@ final class LiveActivityController: ObservableObject {
                 content: ActivityContent(state: content, staleDate: nil))
             activity = requested
             state = .active
-            print("[earshot] live activity started id=\(requested.id)")
+            print("[nightjar] live activity started id=\(requested.id)")
         } catch {
             state = .failed(error.localizedDescription)
-            print("[earshot] live activity failed: \(error)")
+            print("[nightjar] live activity failed: \(error)")
         }
     }
 
@@ -63,7 +63,7 @@ final class LiveActivityController: ObservableObject {
         guard let activity else { return }
         self.activity = nil
         state = .idle
-        print("[earshot] live activity ended")
+        print("[nightjar] live activity ended")
         Task { await activity.end(nil, dismissalPolicy: .immediate) }
     }
 

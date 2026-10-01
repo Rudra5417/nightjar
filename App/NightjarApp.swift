@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct EarshotApp: App {
+struct NightjarApp: App {
 
     @StateObject private var model = AppModel()
     @Environment(\.scenePhase) private var scenePhase

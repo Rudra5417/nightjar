@@ -1,11 +1,11 @@
 import Foundation
-import EarshotCore
+import NightjarCore
 
-// earshot-probe — load the real Fieldwatch catalog pack and classify synthetic radio
+// nightjar-probe — load the real Fieldwatch catalog pack and classify synthetic radio
 // observations the way iOS would present them, then report what survives the move
 // off Android.
 //
-// usage: earshot-probe [path/to/fieldwatch-signatures-v2.json]
+// usage: nightjar-probe [path/to/fieldwatch-signatures-v2.json]
 
 let args = CommandLine.arguments
 let catalogPath = args.count > 1

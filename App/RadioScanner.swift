@@ -1,6 +1,6 @@
 import Foundation
 import CoreBluetooth
-import EarshotCore
+import NightjarCore
 
 /// Node link identifiers, matching firmware/fieldwatch_node. File scope so the
 /// nonisolated CoreBluetooth delegate callbacks can read them without actor hops.

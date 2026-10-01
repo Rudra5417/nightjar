@@ -1,5 +1,5 @@
 import SwiftUI
-import EarshotCore
+import NightjarCore
 
 struct LiveView: View {
 
@@ -32,7 +32,7 @@ struct LiveView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .firstTextBaseline) {
-                Text("EARSHOT")
+                Text("NIGHTJAR")
                     .font(.system(size: 26, weight: .black, design: .rounded))
                     .foregroundStyle(cyan)
                 Spacer()

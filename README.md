@@ -1,4 +1,4 @@
-# Earshot
+# Nightjar
 
 An iPhone app that listens to the radio air around you and says what's there — trackers,
 body cameras, smart glasses, cameras, drones — plus an optional matchbox-sized sensor node
@@ -30,13 +30,13 @@ phone alone     639 / 6962 rules usable  (9.2%)    161/244 fleets reachable
 phone + node   6962 / 6962 rules usable  (100.0%)  244/244 fleets reachable
 ```
 
-That number is computed from the pack, not asserted: `Sources/earshot-probe` prints it.
+That number is computed from the pack, not asserted: `Sources/nightjar-probe` prints it.
 
 ## Layout
 
 ```
-Sources/EarshotCore/     the engine: models, rule matching, payload decoder, node protocol
-Sources/earshot-probe/   CLI: replay a node session, print coverage, run on macOS
+Sources/NightjarCore/     the engine: models, rule matching, payload decoder, node protocol
+Sources/nightjar-probe/   CLI: replay a node session, print coverage, run on macOS
 App/                     the iOS app (SwiftUI + CoreBluetooth)
 firmware/                ESP32 sensor node (see firmware/README.md)
 docs/                    what iOS will and will not let an app see
@@ -48,20 +48,20 @@ project.yml              XcodeGen spec — the source of truth for the Xcode pro
 ```bash
 # engine + tests (no Xcode project needed)
 swift test
-swift run earshot-probe <path/to/fieldwatch-signatures-v2.json> node-session.sample.jsonl
+swift run nightjar-probe <path/to/fieldwatch-signatures-v2.json> node-session.sample.jsonl
 
 # app
-xcodegen generate                  # regenerates Earshot.xcodeproj from project.yml
-open Earshot.xcodeproj             # then set your team and run on the phone
+xcodegen generate                  # regenerates Nightjar.xcodeproj from project.yml
+open Nightjar.xcodeproj             # then set your team and run on the phone
 ```
 
-`Earshot.xcodeproj` is committed so the repo opens without XcodeGen, but `project.yml` wins if
+`Nightjar.xcodeproj` is committed so the repo opens without XcodeGen, but `project.yml` wins if
 they disagree — edit the spec, regenerate, commit both.
 
 ## Keeping it alive without paying Apple
 
 A free Apple ID signs a build for **7 days**; after that the app stops opening until it's
-re-signed. Earshot reads its own `embedded.mobileprovision`, shows the countdown on screen, and
+re-signed. Nightjar reads its own `embedded.mobileprovision`, shows the countdown on screen, and
 schedules local notifications 48h and 12h before expiry — local notifications need no paid
 account, and the app is the only thing in the system that knows the real deadline.
 
@@ -85,7 +85,7 @@ Information — so nothing in it stops working on a free account.
 
 ```bash
 python3 scripts/make_sample_session.py <pack.json> node-session.sample.jsonl
-swift run earshot-probe <pack.json> node-session.sample.jsonl
+swift run nightjar-probe <pack.json> node-session.sample.jsonl
 ```
 
 The sample session is generated *from* the pack, so every OUI and company id in it is a real
@@ -95,10 +95,10 @@ that must **not** be OUI-matched.
 
 ## License and attribution
 
-Earshot is MIT (see `LICENSE`). The rule semantics, catalog format and stock signature pack
+Nightjar is MIT (see `LICENSE`). The rule semantics, catalog format and stock signature pack
 come from [OffGridPete/Fieldwatch](https://github.com/OffGridPete/Fieldwatch) — MIT,
 © Off Grid Pete LLC; see `NOTICE`. IEEE and Bluetooth SIG assigned-number tables inside the
 pack carry their own terms.
 
-Earshot is a separate tool. It is receive-only by design: it never transmits on the air beyond
+Nightjar is a separate tool. It is receive-only by design: it never transmits on the air beyond
 its own link to your node, never connects to anything it hears, and has no offensive features.

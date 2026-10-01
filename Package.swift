@@ -2,15 +2,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "EarshotCore",
+    name: "NightjarCore",
     platforms: [.macOS(.v13), .iOS(.v17)],
     products: [
-        .library(name: "EarshotCore", targets: ["EarshotCore"]),
-        .executable(name: "earshot-probe", targets: ["earshot-probe"]),
+        .library(name: "NightjarCore", targets: ["NightjarCore"]),
+        .executable(name: "nightjar-probe", targets: ["nightjar-probe"]),
     ],
     targets: [
-        .target(name: "EarshotCore"),
-        .executableTarget(name: "earshot-probe", dependencies: ["EarshotCore"]),
-        .testTarget(name: "EarshotCoreTests", dependencies: ["EarshotCore"]),
+        .target(name: "NightjarCore"),
+        .executableTarget(name: "nightjar-probe", dependencies: ["NightjarCore"]),
+        .testTarget(name: "NightjarCoreTests", dependencies: ["NightjarCore"]),
     ]
 )

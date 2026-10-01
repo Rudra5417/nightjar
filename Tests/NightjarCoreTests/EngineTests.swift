@@ -1,5 +1,5 @@
 import XCTest
-@testable import EarshotCore
+@testable import NightjarCore
 
 final class EngineTests: XCTestCase {
     static var engine: SignatureEngine!

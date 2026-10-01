@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Earshot</string>
+	<string>Nightjar</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -21,11 +21,11 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Earshot listens for Bluetooth Low Energy advertisements near you so it can name the devices in the room — trackers, cameras, wearables, drones. It never connects to anything except your own sensor node, and nothing leaves the phone.</string>
+	<string>Nightjar listens for Bluetooth Low Energy advertisements near you so it can name the devices in the room — trackers, cameras, wearables, drones. It never connects to anything except your own sensor node, and nothing leaves the phone.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Earshot listens for Bluetooth Low Energy advertisements near you.</string>
+	<string>Nightjar listens for Bluetooth Low Energy advertisements near you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Earshot stamps each detection with where you were when you heard it, so a session report can show a path. Location never leaves the phone.</string>
+	<string>Nightjar stamps each detection with where you were when you heard it, so a session report can show a path. Location never leaves the phone.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>NSSupportsLiveActivitiesFrequentUpdates</key>

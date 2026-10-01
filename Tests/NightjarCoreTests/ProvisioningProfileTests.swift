@@ -1,5 +1,5 @@
 import XCTest
-@testable import EarshotCore
+@testable import NightjarCore
 
 final class ProvisioningProfileTests: XCTestCase {
 
@@ -10,7 +10,7 @@ final class ProvisioningProfileTests: XCTestCase {
             "TeamIdentifier": ["ABCDE12345"],
             "CreationDate": expiration.addingTimeInterval(-7 * 24 * 3600),
             "ExpirationDate": expiration,
-            "Entitlements": ["application-identifier": "ABCDE12345.com.rudrapatel.earshot"],
+            "Entitlements": ["application-identifier": "ABCDE12345.com.rudrapatel.nightjar"],
         ]
         return try! PropertyListSerialization.data(fromPropertyList: object, format: .xml, options: 0)
     }
@@ -27,7 +27,7 @@ final class ProvisioningProfileTests: XCTestCase {
         let profile = try XCTUnwrap(ProvisioningProfile.parse(cmsData: blob))
         XCTAssertEqual(profile.expirationDate, expiry)
         XCTAssertEqual(profile.teamIdentifier, "ABCDE12345")
-        XCTAssertEqual(profile.applicationIdentifier, "ABCDE12345.com.rudrapatel.earshot")
+        XCTAssertEqual(profile.applicationIdentifier, "ABCDE12345.com.rudrapatel.nightjar")
         XCTAssertFalse(profile.isExpired(at: expiry.addingTimeInterval(-60)))
         XCTAssertTrue(profile.isExpired(at: expiry.addingTimeInterval(60)))
     }

@@ -1,4 +1,4 @@
-# What iOS will and will not let Earshot see
+# What iOS will and will not let Nightjar see
 
 Everything here was checked against Apple's own documentation or a shipping app, not inferred.
 It is the reason the node exists.
@@ -29,7 +29,7 @@ instantiated `CBManager` and starts a Live Activity before backgrounding, it kee
 scanning privileges — unfiltered scans (`withServices: nil`) and duplicate reporting
 (`CBCentralManagerScanOptionAllowDuplicatesKey`) keep working in the background.**
 
-Earshot implements this: `LiveActivityController` requests an activity when listening starts,
+Nightjar implements this: `LiveActivityController` requests an activity when listening starts,
 `AppModel` pushes counts into it every few seconds, and `Widgets/` renders it on the lock screen
 and in the Dynamic Island. The widget carries its state through the activity itself, so no App
 Group (and no paid capability) is involved.
