@@ -1,0 +1,12 @@
+{"t": "node", "id": "NODE-01", "fw": "0.1.0", "chip": "esp32-c5", "batt": 84, "lat": 34.0195, "lon": -118.4912, "uptime_ms": 41200}
+{"t": "ap", "node": "NODE-01", "bssid": "B4:1E:52:11:22:33", "ssid": "Flock-4C21AB", "rssi": -61, "ch": 6, "band": "2.4", "auth": "WPA2", "hidden": false, "ie_ouis": ["000FAC", "0050F2", "FA0BBC"], "first_ms": 1200, "last_ms": 40200, "count": 3}
+{"t": "ap", "node": "NODE-01", "bssid": "00:25:DF:12:23:34", "ssid": "Axon-Fleet-01", "rssi": -74, "ch": 11, "band": "2.4", "auth": "WPA2", "hidden": false, "ie_ouis": ["0050F2"], "first_ms": 1290, "last_ms": 40200, "count": 4}
+{"t": "ap", "node": "NODE-01", "bssid": "00:0B:86:15:26:37", "ssid": "Aruba-AP-cafe", "rssi": -66, "ch": 36, "band": "5", "auth": "WPA2", "hidden": false, "ie_ouis": ["000B86"], "first_ms": 1560, "last_ms": 40200, "count": 7}
+{"t": "ap", "node": "NODE-01", "bssid": "00:00:0C:16:27:38", "ssid": "", "rssi": -58, "ch": 1, "band": "2.4", "auth": "WPA2", "hidden": true, "ie_ouis": ["00000C", "0050F2"], "first_ms": 1650, "last_ms": 40200, "count": 8}
+{"t": "ble", "node": "NODE-01", "addr": "DA:A1:19:40:51:62", "addr_type": "public", "rssi": -72, "name": "Ray-Ban Meta 7A2C", "uuids": ["FEB7"], "first_ms": 2100, "last_ms": 41800, "count": 5, "mfg_id": 427, "mfg_hex": "0B01"}
+{"t": "ble", "node": "NODE-01", "addr": "DA:A1:19:41:52:63", "addr_type": "public", "rssi": -79, "name": "", "uuids": [], "first_ms": 2220, "last_ms": 41800, "count": 6, "mfg_id": 2218, "mfg_hex": "0A00"}
+{"t": "ble", "node": "NODE-01", "addr": "00:25:DF:42:53:64", "addr_type": "public", "rssi": -68, "name": "Axon Body 4", "uuids": ["FE6B"], "first_ms": 2340, "last_ms": 41800, "count": 7, "mfg_id": 845, "mfg_hex": "0A00"}
+{"t": "ble", "node": "NODE-01", "addr": "DA:A1:19:43:54:65", "addr_type": "random", "rssi": -83, "name": "AirTag", "uuids": ["FD44"], "first_ms": 2460, "last_ms": 41800, "count": 8}
+{"t": "ble", "node": "NODE-01", "addr": "60:60:1F:22:33:44", "addr_type": "random", "rssi": -81, "name": "", "uuids": [], "svc_data": [{"u": "FFFA", "h": "0D0000121596F3A1B2C3D4E5F607"}], "first_ms": 2600, "last_ms": 41000, "count": 12}
+{"t": "scan", "phase": "wifi", "ms": 812, "aps": 6, "radios": ["2.4", "5"], "chan_mask": "1,6,11,36,44,149"}
+{"t": "scan", "phase": "ble", "ms": 640, "radios": ["ble"]}

@@ -1,0 +1,381 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		30CEFA5FD86855E6A4D334D0 /* EarshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = 27F5E23D81A2B043B6809958 /* EarshotCore */; };
+		37C00C91B2D72B15718BEC00 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11421595DE465409AB92FE20 /* AppModel.swift */; };
+		522795AAC7A33C1964A37A41 /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9914BEAF1A73B316C0C43A4A /* LiveView.swift */; };
+		56574DCA6E0CA0080CC2225A /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F5D67860C7C24CEFDB6374 /* Catalog.swift */; };
+		8B5B701D9102FC367277576D /* SessionLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A92A507A2C11BA3C85B6D1 /* SessionLog.swift */; };
+		8F188C04263F2CE45F59ED88 /* EarshotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EBA58C3D2898715D6A6741 /* EarshotApp.swift */; };
+		C43583A02BF278B0A0843F5E /* RadioScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB8B1D20B4147777A17DDC3 /* RadioScanner.swift */; };
+		F66DE5CEEAE52F1D3142B898 /* fieldwatch-signatures-v2.json in Resources */ = {isa = PBXBuildFile; fileRef = DCE15F19C4BAEA712CED9159 /* fieldwatch-signatures-v2.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		01F5D67860C7C24CEFDB6374 /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalog.swift; sourceTree = "<group>"; };
+		11421595DE465409AB92FE20 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		23A92A507A2C11BA3C85B6D1 /* SessionLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLog.swift; sourceTree = "<group>"; };
+		4BB8B1D20B4147777A17DDC3 /* RadioScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioScanner.swift; sourceTree = "<group>"; };
+		66ABC7433D97F2196B9CBAE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		88EBA58C3D2898715D6A6741 /* EarshotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarshotApp.swift; sourceTree = "<group>"; };
+		9914BEAF1A73B316C0C43A4A /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
+		A9F3AC13F78617D61F487F4D /* earshot */ = {isa = PBXFileReference; lastKnownFileType = folder; name = earshot; path = .; sourceTree = SOURCE_ROOT; };
+		D417CBEB2EF403CE505CD8E9 /* Earshot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Earshot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCE15F19C4BAEA712CED9159 /* fieldwatch-signatures-v2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "fieldwatch-signatures-v2.json"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ABD18C9466C9307CA598348F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30CEFA5FD86855E6A4D334D0 /* EarshotCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		373449AA16D97653E16A2BF2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D417CBEB2EF403CE505CD8E9 /* Earshot.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		62717B0C2565E8B372A48B46 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				973FC669F8703CDD191D1DF5 /* Resources */,
+				11421595DE465409AB92FE20 /* AppModel.swift */,
+				01F5D67860C7C24CEFDB6374 /* Catalog.swift */,
+				88EBA58C3D2898715D6A6741 /* EarshotApp.swift */,
+				66ABC7433D97F2196B9CBAE6 /* Info.plist */,
+				9914BEAF1A73B316C0C43A4A /* LiveView.swift */,
+				4BB8B1D20B4147777A17DDC3 /* RadioScanner.swift */,
+				23A92A507A2C11BA3C85B6D1 /* SessionLog.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		88D37AC54B0D51722EF4C16F /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				A9F3AC13F78617D61F487F4D /* earshot */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		973FC669F8703CDD191D1DF5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DCE15F19C4BAEA712CED9159 /* fieldwatch-signatures-v2.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		993B8D204E4E7B3167DF2E35 = {
+			isa = PBXGroup;
+			children = (
+				62717B0C2565E8B372A48B46 /* App */,
+				88D37AC54B0D51722EF4C16F /* Packages */,
+				373449AA16D97653E16A2BF2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E31CD32546C44FDD4709019C /* Earshot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F90677C9B9E9DC75FEA96C9 /* Build configuration list for PBXNativeTarget "Earshot" */;
+			buildPhases = (
+				5D13E956E409F7051DBFD895 /* Sources */,
+				7CFCE4E4E5D99BE35181A59E /* Resources */,
+				ABD18C9466C9307CA598348F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Earshot;
+			packageProductDependencies = (
+				27F5E23D81A2B043B6809958 /* EarshotCore */,
+			);
+			productName = Earshot;
+			productReference = D417CBEB2EF403CE505CD8E9 /* Earshot.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9FB774AEE0DC1581E53209CF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					E31CD32546C44FDD4709019C = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 5E10F8C7203D68DB8A12B50A /* Build configuration list for PBXProject "Earshot" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 993B8D204E4E7B3167DF2E35;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				85AFEB5A2885BF5AD1DEC79C /* XCLocalSwiftPackageReference "." */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 373449AA16D97653E16A2BF2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E31CD32546C44FDD4709019C /* Earshot */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7CFCE4E4E5D99BE35181A59E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F66DE5CEEAE52F1D3142B898 /* fieldwatch-signatures-v2.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5D13E956E409F7051DBFD895 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37C00C91B2D72B15718BEC00 /* AppModel.swift in Sources */,
+				56574DCA6E0CA0080CC2225A /* Catalog.swift in Sources */,
+				8F188C04263F2CE45F59ED88 /* EarshotApp.swift in Sources */,
+				522795AAC7A33C1964A37A41 /* LiveView.swift in Sources */,
+				C43583A02BF278B0A0843F5E /* RadioScanner.swift in Sources */,
+				8B5B701D9102FC367277576D /* SessionLog.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0E956BB3C807FD8C37138DE3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1010EACC05677C5E33B6E28E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rudrapatel.earshot;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		442DB5E1579CF9F8F2E674FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		987A614C5B11A6A47360C74E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rudrapatel.earshot;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5E10F8C7203D68DB8A12B50A /* Build configuration list for PBXProject "Earshot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E956BB3C807FD8C37138DE3 /* Debug */,
+				442DB5E1579CF9F8F2E674FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7F90677C9B9E9DC75FEA96C9 /* Build configuration list for PBXNativeTarget "Earshot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				987A614C5B11A6A47360C74E /* Debug */,
+				1010EACC05677C5E33B6E28E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		85AFEB5A2885BF5AD1DEC79C /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		27F5E23D81A2B043B6809958 /* EarshotCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EarshotCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 9FB774AEE0DC1581E53209CF /* Project object */;
+}

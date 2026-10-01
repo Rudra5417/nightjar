@@ -1,0 +1,54 @@
+name: Earshot
+options:
+  bundleIdPrefix: com.rudrapatel
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+packages:
+  EarshotCore:
+    path: .
+
+targets:
+  Earshot:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+    dependencies:
+      - package: EarshotCore
+        product: EarshotCore
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Earshot
+        CFBundleShortVersionString: "0.1.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSBluetoothAlwaysUsageDescription: >-
+          Earshot listens for Bluetooth Low Energy advertisements near you so it can name
+          the devices in the room — trackers, cameras, wearables, drones. It never
+          connects to anything except your own sensor node, and nothing leaves the phone.
+        NSBluetoothPeripheralUsageDescription: >-
+          Earshot listens for Bluetooth Low Energy advertisements near you.
+        NSLocationWhenInUseUsageDescription: >-
+          Earshot stamps each detection with where you were when you heard it, so a
+          session report can show a path. Location never leaves the phone.
+        UIBackgroundModes:
+          - bluetooth-central
+          - location
+        NSSupportsLiveActivities: true
+        NSSupportsLiveActivitiesFrequentUpdates: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.rudrapatel.earshot
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "5.9"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        GENERATE_INFOPLIST_FILE: NO
