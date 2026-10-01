@@ -8,9 +8,9 @@ struct EarshotApp: App {
 
     var body: some Scene {
         WindowGroup {
-            LiveView(model: model, reminder: model.reminder)
+            LiveView(model: model, reminder: model.reminder, activity: model.activity)
                 .onAppear {
-                    model.scanner.start()
+                    model.startListening()
                     model.reminder.schedule()
                 }
                 .onChange(of: scenePhase) { _, phase in

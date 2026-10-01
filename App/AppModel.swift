@@ -51,6 +51,7 @@ final class AppModel: ObservableObject {
     let scanner = RadioScanner()
     let log = SessionLog()
     let reminder = ExpiryReminder()
+    let activity = LiveActivityController()
 
     @Published private(set) var rows: [RadioRow] = []
     @Published var showOnlyNamed = false
@@ -68,6 +69,22 @@ final class AppModel: ObservableObject {
         if !hits.isEmpty { hitsByKey[obs.identityKey] = hits }
         log.append(obs, hits: hits)
         refresh()
+        activity.update(radios: scanner.radios.count,
+                        named: namedCount,
+                        node: scanner.nodeId.map { "node \($0)" } ?? "phone",
+                        strongest: rows.first(where: { !$0.hits.isEmpty })?.title)
+    }
+
+    /// Listening and the Live Activity start together: the activity is what keeps the scan
+    /// alive once the app is backgrounded.
+    func startListening() {
+        scanner.start()
+        activity.start(catalogSource: catalog.source)
+    }
+
+    func stopListening() {
+        scanner.stop()
+        activity.stop()
     }
 
     func refresh() {

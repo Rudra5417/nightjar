@@ -11,21 +11,53 @@
 		30CEFA5FD86855E6A4D334D0 /* EarshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = 27F5E23D81A2B043B6809958 /* EarshotCore */; };
 		37C00C91B2D72B15718BEC00 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11421595DE465409AB92FE20 /* AppModel.swift */; };
 		522795AAC7A33C1964A37A41 /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9914BEAF1A73B316C0C43A4A /* LiveView.swift */; };
+		54049EB2CE5074DB1CEF1748 /* EarshotWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824FBFBA5AC286FDB380C516 /* EarshotWidgets.swift */; };
 		56574DCA6E0CA0080CC2225A /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F5D67860C7C24CEFDB6374 /* Catalog.swift */; };
 		8B5B701D9102FC367277576D /* SessionLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A92A507A2C11BA3C85B6D1 /* SessionLog.swift */; };
 		8F188C04263F2CE45F59ED88 /* EarshotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EBA58C3D2898715D6A6741 /* EarshotApp.swift */; };
 		C43583A02BF278B0A0843F5E /* RadioScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB8B1D20B4147777A17DDC3 /* RadioScanner.swift */; };
+		CE5E97CE4C52988F558788AB /* EarshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = 754F2B6F153B57A091708843 /* EarshotCore */; };
+		EAF2E4536BDA7013791774C9 /* EarshotWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 07A3A3B4FB1A17C1A87F0B86 /* EarshotWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		EF520836620BF0E632025435 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C163123344AD2E7D4364866 /* LiveActivityController.swift */; };
 		F66DE5CEEAE52F1D3142B898 /* fieldwatch-signatures-v2.json in Resources */ = {isa = PBXBuildFile; fileRef = DCE15F19C4BAEA712CED9159 /* fieldwatch-signatures-v2.json */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C261D92B17E02847D4538F18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9FB774AEE0DC1581E53209CF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9E6A30F39695F2EA0DF0573E;
+			remoteInfo = EarshotWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A6809353CCCD200FCF5B40BE /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EAF2E4536BDA7013791774C9 /* EarshotWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		01F5D67860C7C24CEFDB6374 /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalog.swift; sourceTree = "<group>"; };
+		07A3A3B4FB1A17C1A87F0B86 /* EarshotWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = EarshotWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		11421595DE465409AB92FE20 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		23A92A507A2C11BA3C85B6D1 /* SessionLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLog.swift; sourceTree = "<group>"; };
+		35A64862EA302F31DCC79401 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4BB8B1D20B4147777A17DDC3 /* RadioScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioScanner.swift; sourceTree = "<group>"; };
 		66ABC7433D97F2196B9CBAE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		824FBFBA5AC286FDB380C516 /* EarshotWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarshotWidgets.swift; sourceTree = "<group>"; };
 		88EBA58C3D2898715D6A6741 /* EarshotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarshotApp.swift; sourceTree = "<group>"; };
 		9914BEAF1A73B316C0C43A4A /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
+		9C163123344AD2E7D4364866 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
 		A9F3AC13F78617D61F487F4D /* earshot */ = {isa = PBXFileReference; lastKnownFileType = folder; name = earshot; path = .; sourceTree = SOURCE_ROOT; };
 		BD617DD0BECDE02F29053BC4 /* ExpiryReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiryReminder.swift; sourceTree = "<group>"; };
 		D417CBEB2EF403CE505CD8E9 /* Earshot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Earshot.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -33,6 +65,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6578670F6093FC28EA1D1F1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE5E97CE4C52988F558788AB /* EarshotCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABD18C9466C9307CA598348F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -48,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				D417CBEB2EF403CE505CD8E9 /* Earshot.app */,
+				07A3A3B4FB1A17C1A87F0B86 /* EarshotWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +102,7 @@
 				88EBA58C3D2898715D6A6741 /* EarshotApp.swift */,
 				BD617DD0BECDE02F29053BC4 /* ExpiryReminder.swift */,
 				66ABC7433D97F2196B9CBAE6 /* Info.plist */,
+				9C163123344AD2E7D4364866 /* LiveActivityController.swift */,
 				9914BEAF1A73B316C0C43A4A /* LiveView.swift */,
 				4BB8B1D20B4147777A17DDC3 /* RadioScanner.swift */,
 				23A92A507A2C11BA3C85B6D1 /* SessionLog.swift */,
@@ -89,13 +131,42 @@
 			children = (
 				62717B0C2565E8B372A48B46 /* App */,
 				88D37AC54B0D51722EF4C16F /* Packages */,
+				F6376F3FB7295707FAE588FC /* Widgets */,
 				373449AA16D97653E16A2BF2 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		F6376F3FB7295707FAE588FC /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				824FBFBA5AC286FDB380C516 /* EarshotWidgets.swift */,
+				35A64862EA302F31DCC79401 /* Info.plist */,
+			);
+			path = Widgets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9E6A30F39695F2EA0DF0573E /* EarshotWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 362AF40F61F25FF4C2F71373 /* Build configuration list for PBXNativeTarget "EarshotWidgets" */;
+			buildPhases = (
+				E81DCDF4F47554E0AC6DC216 /* Sources */,
+				6578670F6093FC28EA1D1F1B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EarshotWidgets;
+			packageProductDependencies = (
+				754F2B6F153B57A091708843 /* EarshotCore */,
+			);
+			productName = EarshotWidgets;
+			productReference = 07A3A3B4FB1A17C1A87F0B86 /* EarshotWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		E31CD32546C44FDD4709019C /* Earshot */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7F90677C9B9E9DC75FEA96C9 /* Build configuration list for PBXNativeTarget "Earshot" */;
@@ -103,10 +174,12 @@
 				5D13E956E409F7051DBFD895 /* Sources */,
 				7CFCE4E4E5D99BE35181A59E /* Resources */,
 				ABD18C9466C9307CA598348F /* Frameworks */,
+				A6809353CCCD200FCF5B40BE /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1130383EDABA08C5A624DD0C /* PBXTargetDependency */,
 			);
 			name = Earshot;
 			packageProductDependencies = (
@@ -125,6 +198,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					9E6A30F39695F2EA0DF0573E = {
+						ProvisioningStyle = Automatic;
+					};
 					E31CD32546C44FDD4709019C = {
 						ProvisioningStyle = Automatic;
 					};
@@ -148,6 +224,7 @@
 			projectRoot = "";
 			targets = (
 				E31CD32546C44FDD4709019C /* Earshot */,
+				9E6A30F39695F2EA0DF0573E /* EarshotWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -172,13 +249,30 @@
 				56574DCA6E0CA0080CC2225A /* Catalog.swift in Sources */,
 				8F188C04263F2CE45F59ED88 /* EarshotApp.swift in Sources */,
 				02EBEE13CB1066EA4C7A0554 /* ExpiryReminder.swift in Sources */,
+				EF520836620BF0E632025435 /* LiveActivityController.swift in Sources */,
 				522795AAC7A33C1964A37A41 /* LiveView.swift in Sources */,
 				C43583A02BF278B0A0843F5E /* RadioScanner.swift in Sources */,
 				8B5B701D9102FC367277576D /* SessionLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E81DCDF4F47554E0AC6DC216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54049EB2CE5074DB1CEF1748 /* EarshotWidgets.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1130383EDABA08C5A624DD0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9E6A30F39695F2EA0DF0573E /* EarshotWidgets */;
+			targetProxy = C261D92B17E02847D4538F18 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0E956BB3C807FD8C37138DE3 /* Debug */ = {
@@ -322,6 +416,48 @@
 			};
 			name = Release;
 		};
+		890A91AEEDAF7B815F15B208 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rudrapatel.earshot.widgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		95839FC320974D99DEC7C37A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rudrapatel.earshot.widgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		987A614C5B11A6A47360C74E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -347,6 +483,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		362AF40F61F25FF4C2F71373 /* Build configuration list for PBXNativeTarget "EarshotWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95839FC320974D99DEC7C37A /* Debug */,
+				890A91AEEDAF7B815F15B208 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		5E10F8C7203D68DB8A12B50A /* Build configuration list for PBXProject "Earshot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -376,6 +521,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		27F5E23D81A2B043B6809958 /* EarshotCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EarshotCore;
+		};
+		754F2B6F153B57A091708843 /* EarshotCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = EarshotCore;
 		};

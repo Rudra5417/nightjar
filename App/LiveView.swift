@@ -5,6 +5,7 @@ struct LiveView: View {
 
     @ObservedObject var model: AppModel
     @ObservedObject var reminder: ExpiryReminder
+    @ObservedObject var activity: LiveActivityController
     @State private var tick = Date()
 
     private let cyan = Color(red: 0.176, green: 0.831, blue: 0.969)   // #2dd4f7
@@ -50,10 +51,12 @@ struct LiveView: View {
                 pill("catalog covers \(model.catalog.iosUsableRules)/\(model.catalog.rules) rules phone-only",
                      color: .gray)
                 pill(reminder.summary, color: expiryColor)
+                pill(activity.summary,
+                     color: activity.isActive ? violet : .gray)
             }
             HStack(spacing: 8) {
                 Button(model.scanner.isScanning ? "Pause" : "Listen") {
-                    model.scanner.isScanning ? model.scanner.stop() : model.scanner.start()
+                    model.scanner.isScanning ? model.stopListening() : model.startListening()
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(cyan)

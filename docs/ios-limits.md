@@ -29,7 +29,18 @@ instantiated `CBManager` and starts a Live Activity before backgrounding, it kee
 scanning privileges — unfiltered scans (`withServices: nil`) and duplicate reporting
 (`CBCentralManagerScanOptionAllowDuplicatesKey`) keep working in the background.**
 
-Until that lands in Earshot, `RadioScanner.setForeground(false)` narrows the scan to the node's
+Earshot implements this: `LiveActivityController` requests an activity when listening starts,
+`AppModel` pushes counts into it every few seconds, and `Widgets/` renders it on the lock screen
+and in the Dynamic Island. The widget carries its state through the activity itself, so no App
+Group (and no paid capability) is involved.
+
+**Status: the activity starts and `liveactivitiesd` accepts it — verified in the simulator. The
+privilege it is supposed to buy is not verified.** That needs a real device and a real
+backgrounded session; the simulator has no Bluetooth at all, so the scan path cannot be
+exercised there. Do not treat background scanning as working until it has been seen working on
+hardware.
+
+Until that is confirmed, `RadioScanner.setForeground(false)` narrows the scan to the node's
 service UUID, so the phone holds the link and the *node* does the listening. That is the
 architecture the code is written around.
 

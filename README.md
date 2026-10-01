@@ -15,7 +15,7 @@ Passive and local. No account, no server, no ads. Nothing leaves the phone.
 | Catalog engine ported to Swift, runs on iOS | **working** — 13 tests, all green |
 | Sensor node link over BLE GATT (Wi-Fi APs, real MACs, 5 GHz) | **working code, unflashed** — firmware compiles for C5/C6/S3/classic |
 | iOS app builds for simulator and device | **working** |
-| Background scanning via Live Activity (iOS 26) | **not yet** — see `docs/ios-limits.md` |
+| Background scanning via Live Activity (iOS 26) | **built** — activity starts and the system accepts it; whether it grants background scan privileges is unverified until it runs on a real phone |
 | Direction finding, session reports, exports, TAK/CoT | **not yet** |
 
 ## The honest coverage story
