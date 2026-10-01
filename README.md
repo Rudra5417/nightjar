@@ -65,6 +65,32 @@ re-signed. Nightjar reads its own `embedded.mobileprovision`, shows the countdow
 schedules local notifications 48h and 12h before expiry — local notifications need no paid
 account, and the app is the only thing in the system that knows the real deadline.
 
+You can check any sideloaded build's clock from the command line, without Xcode:
+
+```bash
+swift run nightjar-probe --profile /path/to/SomeApp.app
+```
+
+```
+profile      iOS Team Provisioning Profile: com.example.thing
+team         TEAMID
+app id       TEAMID.com.example.thing
+expires      2026-09-27T22:31:25Z
+remaining    expired   <-- will not launch
+```
+
+### Signing needs an Apple ID in Xcode
+
+`-allowProvisioningUpdates` mints the profile from the account Xcode holds. If Xcode's account
+list is empty the build fails with `No Accounts: Add a new account in Accounts settings` — no
+amount of retrying fixes it, and no script can supply the credentials. Add the account once in
+**Xcode > Settings > Accounts > +**, then:
+
+```bash
+scripts/run-on-device.sh            # build, install, stream the console
+scripts/run-on-device.sh --build-only
+```
+
 Re-signing needs the phone plugged into your Mac (or on the same Wi-Fi) once a week. Nothing
 else about the app cares: it runs offline, anywhere, in airplane mode, in any country.
 

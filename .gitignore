@@ -3,6 +3,7 @@
 
 # SwiftPM
 .build/
+.build-device/
 .swiftpm/
 
 # Xcode

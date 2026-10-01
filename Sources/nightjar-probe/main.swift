@@ -8,6 +8,30 @@ import NightjarCore
 // usage: nightjar-probe [path/to/fieldwatch-signatures-v2.json]
 
 let args = CommandLine.arguments
+
+// Diagnose the 7-day clock on any sideloaded build, without Xcode:
+//   nightjar-probe --profile /path/to/App.app    (or a .mobileprovision)
+if args.count > 2 && args[1] == "--profile" {
+    let target = URL(fileURLWithPath: args[2])
+    let embedded = target.pathExtension == "app"
+        ? target.appendingPathComponent("embedded.mobileprovision")
+        : target
+    guard let data = try? Data(contentsOf: embedded),
+          let profile = ProvisioningProfile.parse(cmsData: data) else {
+        FileHandle.standardError.write(Data("no provisioning profile at \(embedded.path)\n".utf8))
+        exit(2)
+    }
+    let iso = ISO8601DateFormatter()
+    line("source       \(embedded.path)")
+    line("profile      \(profile.name ?? "-")")
+    line("team         \(profile.teamIdentifier ?? "-")")
+    line("app id       \(profile.applicationIdentifier ?? "-")")
+    line("created      \(profile.creationDate.map { iso.string(from: $0) } ?? "-")")
+    line("expires      \(iso.string(from: profile.expirationDate))")
+    line("remaining    \(profile.remainingLabel())\(profile.isExpired() ? "   <-- will not launch" : "")")
+    exit(0)
+}
+
 let catalogPath = args.count > 1
     ? args[1]
     : "\(NSHomeDirectory())/.hermes/cache/scratch/fw/Fieldwatch/dist/fieldwatch-signatures-v2.json"
