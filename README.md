@@ -12,11 +12,20 @@ Passive and local. No account, no server, no ads. Nothing leaves the phone.
 |---|---|
 | BLE observation with payload signature matching | **working** — name / service UUID / manufacturer data / service data rules |
 | Live list, class chips, RSSI strength, session log | **working** |
-| Catalog engine ported to Swift, runs on iOS | **working** — 13 tests, all green |
+| Catalog engine ported to Swift, runs on iOS | **working** — 21 tests, all green |
+| Live / Map split with a screener map and geotagged detections | **working** — pins are places *you* stood, never a computed device position |
 | Sensor node link over BLE GATT (Wi-Fi APs, real MACs, 5 GHz) | **working code, unflashed** — firmware compiles for C5/C6/S3/classic |
 | iOS app builds for simulator and device | **working** |
 | Background scanning via Live Activity (iOS 26) | **built** — activity starts and the system accepts it; whether it grants background scan privileges is unverified until it runs on a real phone |
-| Direction finding, session reports, exports, TAK/CoT | **not yet** |
+| Session reports, exports, TAK/CoT, multi-node triangulation | **not yet** |
+
+### About the map
+
+A single phone cannot triangulate a BLE device: RSSI gives a range, never a bearing. So the pins
+on the map are the positions **you** occupied when a device was heard, not a guessed location for
+the device. Tapping a radio shows every place you heard it plus a warm/cold trend from the recent
+readings. Standing still produces one cluster — that is the honest answer, not a bug. Real
+position fixing needs the two or three nodes in `firmware/`.
 
 ## The honest coverage story
 

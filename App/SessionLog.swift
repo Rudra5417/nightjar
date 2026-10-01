@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 import NightjarCore
 
 /// Append-only session log, one JSON object per line, in the app's Documents folder.
@@ -28,7 +29,7 @@ final class SessionLog: ObservableObject {
 
     var path: String { url.path }
 
-    func append(_ obs: Observation, hits: [FleetHit]) {
+    func append(_ obs: Observation, hits: [FleetHit], coordinate: CLLocationCoordinate2D? = nil) {
         guard let handle else { return }
         let object: [String: Any] = [
             "t": obs.kind == .wifi ? "ap" : "ble",
@@ -37,6 +38,8 @@ final class SessionLog: ObservableObject {
             "mac": obs.mac ?? NSNull(),
             "name": obs.name,
             "rssi": obs.rssiIsKnown ? obs.rssi as Any : NSNull(),
+            "lat": coordinate?.latitude ?? NSNull(),
+            "lon": coordinate?.longitude ?? NSNull(),
             "band": obs.band ?? NSNull(),
             "ch": obs.channel ?? NSNull(),
             "addr_type": obs.addressType ?? NSNull(),
