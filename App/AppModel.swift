@@ -50,6 +50,7 @@ final class AppModel: ObservableObject {
     let catalog = Catalog()
     let scanner = RadioScanner()
     let log = SessionLog()
+    let reminder = ExpiryReminder()
 
     @Published private(set) var rows: [RadioRow] = []
     @Published var showOnlyNamed = false

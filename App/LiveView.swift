@@ -4,6 +4,7 @@ import EarshotCore
 struct LiveView: View {
 
     @ObservedObject var model: AppModel
+    @ObservedObject var reminder: ExpiryReminder
     @State private var tick = Date()
 
     private let cyan = Color(red: 0.176, green: 0.831, blue: 0.969)   // #2dd4f7
@@ -48,6 +49,7 @@ struct LiveView: View {
                      color: model.scanner.nodeState.contains("node ") ? violet : .gray)
                 pill("catalog covers \(model.catalog.iosUsableRules)/\(model.catalog.rules) rules phone-only",
                      color: .gray)
+                pill(reminder.summary, color: expiryColor)
             }
             HStack(spacing: 8) {
                 Button(model.scanner.isScanning ? "Pause" : "Listen") {
@@ -70,6 +72,19 @@ struct LiveView: View {
                 Text("named only")
                     .font(.system(size: 11))
                     .foregroundStyle(.white.opacity(0.5))
+
+                Button(reminderLabel) {
+                    Task {
+                        if reminder.authorization == .notDetermined {
+                            await reminder.requestAuthorization()
+                        } else {
+                            reminder.schedule()
+                        }
+                    }
+                }
+                .buttonStyle(.bordered)
+                .tint(.orange)
+                .disabled(!reminder.hasClock || reminder.urgency == .expired)
             }
         }
         .padding(.horizontal, 16)
@@ -157,6 +172,22 @@ struct LiveView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
+    }
+
+    private var expiryColor: Color {
+        switch reminder.urgency {
+        case .expired: return .red
+        case .soon: return .orange
+        case .fine: return cyan
+        case .none: return .gray
+        }
+    }
+
+    private var reminderLabel: String {
+        guard reminder.hasClock else { return "no clock" }
+        if reminder.authorization == .denied { return "notifications off" }
+        if reminder.urgency == .expired { return "expired" }
+        return reminder.scheduled.isEmpty ? "remind me" : "reminder set"
     }
 
     private func pill(_ text: String, color: Color) -> some View {

@@ -8,8 +8,11 @@ struct EarshotApp: App {
 
     var body: some Scene {
         WindowGroup {
-            LiveView(model: model)
-                .onAppear { model.scanner.start() }
+            LiveView(model: model, reminder: model.reminder)
+                .onAppear {
+                    model.scanner.start()
+                    model.reminder.schedule()
+                }
                 .onChange(of: scenePhase) { _, phase in
                     // Background: iOS stops delivering unfiltered scan results, so hand the
                     // work to the node and keep only the filtered link alive. See

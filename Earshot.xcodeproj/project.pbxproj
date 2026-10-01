@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02EBEE13CB1066EA4C7A0554 /* ExpiryReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD617DD0BECDE02F29053BC4 /* ExpiryReminder.swift */; };
 		30CEFA5FD86855E6A4D334D0 /* EarshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = 27F5E23D81A2B043B6809958 /* EarshotCore */; };
 		37C00C91B2D72B15718BEC00 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11421595DE465409AB92FE20 /* AppModel.swift */; };
 		522795AAC7A33C1964A37A41 /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9914BEAF1A73B316C0C43A4A /* LiveView.swift */; };
@@ -26,6 +27,7 @@
 		88EBA58C3D2898715D6A6741 /* EarshotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarshotApp.swift; sourceTree = "<group>"; };
 		9914BEAF1A73B316C0C43A4A /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
 		A9F3AC13F78617D61F487F4D /* earshot */ = {isa = PBXFileReference; lastKnownFileType = folder; name = earshot; path = .; sourceTree = SOURCE_ROOT; };
+		BD617DD0BECDE02F29053BC4 /* ExpiryReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiryReminder.swift; sourceTree = "<group>"; };
 		D417CBEB2EF403CE505CD8E9 /* Earshot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Earshot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCE15F19C4BAEA712CED9159 /* fieldwatch-signatures-v2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "fieldwatch-signatures-v2.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,6 +59,7 @@
 				11421595DE465409AB92FE20 /* AppModel.swift */,
 				01F5D67860C7C24CEFDB6374 /* Catalog.swift */,
 				88EBA58C3D2898715D6A6741 /* EarshotApp.swift */,
+				BD617DD0BECDE02F29053BC4 /* ExpiryReminder.swift */,
 				66ABC7433D97F2196B9CBAE6 /* Info.plist */,
 				9914BEAF1A73B316C0C43A4A /* LiveView.swift */,
 				4BB8B1D20B4147777A17DDC3 /* RadioScanner.swift */,
@@ -168,6 +171,7 @@
 				37C00C91B2D72B15718BEC00 /* AppModel.swift in Sources */,
 				56574DCA6E0CA0080CC2225A /* Catalog.swift in Sources */,
 				8F188C04263F2CE45F59ED88 /* EarshotApp.swift in Sources */,
+				02EBEE13CB1066EA4C7A0554 /* ExpiryReminder.swift in Sources */,
 				522795AAC7A33C1964A37A41 /* LiveView.swift in Sources */,
 				C43583A02BF278B0A0843F5E /* RadioScanner.swift in Sources */,
 				8B5B701D9102FC367277576D /* SessionLog.swift in Sources */,

@@ -58,6 +58,29 @@ open Earshot.xcodeproj             # then set your team and run on the phone
 `Earshot.xcodeproj` is committed so the repo opens without XcodeGen, but `project.yml` wins if
 they disagree — edit the spec, regenerate, commit both.
 
+## Keeping it alive without paying Apple
+
+A free Apple ID signs a build for **7 days**; after that the app stops opening until it's
+re-signed. Earshot reads its own `embedded.mobileprovision`, shows the countdown on screen, and
+schedules local notifications 48h and 12h before expiry — local notifications need no paid
+account, and the app is the only thing in the system that knows the real deadline.
+
+Re-signing needs the phone plugged into your Mac (or on the same Wi-Fi) once a week. Nothing
+else about the app cares: it runs offline, anywhere, in airplane mode, in any country.
+
+| Route | Laptop needed | Notes |
+|---|---|---|
+| Xcode, plug in | ~30s/week by hand | simplest, nothing to break |
+| SideStep / AltServer on a Mac | ~10 min/week, scheduled | `sudo pmset repeat wakeorpoweron SU 03:00:00` gives the Mac a weekly wake window instead of running it 24/7 |
+| SideStore on the phone | never | refreshes on-device; breaks on iOS point releases |
+
+**Missing the deadline costs no data.** A lapsed signature means the app won't open; the session
+log in Documents survives and is there again after re-signing. If the node is running standalone
+it never notices at all.
+
+The app declares no paid-only capability — no push, no iCloud, no App Groups, no Access Wi-Fi
+Information — so nothing in it stops working on a free account.
+
 ## Try the engine without a phone
 
 ```bash
