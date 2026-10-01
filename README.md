@@ -123,8 +123,8 @@ swift run nightjar-probe --profile /path/to/SomeApp.app
 
 ```
 profile      iOS Team Provisioning Profile: com.example.thing
-team         TEAMID
-app id       TEAMID.com.example.thing
+team         ABCDE12345
+app id       ABCDE12345.com.example.thing
 expires      2026-09-27T22:31:25Z
 remaining    expired   <-- will not launch
 ```

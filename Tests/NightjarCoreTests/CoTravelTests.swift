@@ -7,8 +7,9 @@ import CoreLocation
 /// devices that must *not* be flagged.
 final class CoTravelTests: XCTestCase {
 
+    /// Synthetic coordinates, ~1.5 km apart. Deliberately not anywhere real: a test fixture is a
+    /// published file, and a home latitude and longitude is a home address.
     private let home = CLLocationCoordinate2D(latitude: 10.00000, longitude: 20.00000)
-    /// ~1.5 km away, comfortably outside the 60 m place radius.
     private let cafe = CLLocationCoordinate2D(latitude: 10.01351, longitude: 20.00000)
     private let store = CLLocationCoordinate2D(latitude: 10.02702, longitude: 20.00000)
 

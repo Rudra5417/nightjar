@@ -6,6 +6,8 @@ import CoreLocation
 /// rendered as a single dot, which is indistinguishable from nothing at all.
 final class PinSpreadTests: XCTestCase {
 
+    /// Synthetic coordinates. A published test fixture must not carry a real home latitude and
+    /// longitude.
     private let home = CLLocationCoordinate2D(latitude: 10.00000, longitude: 20.00000)
 
     func testSingleCoordinateIsLeftAlone() {
