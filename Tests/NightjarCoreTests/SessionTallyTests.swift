@@ -2,9 +2,8 @@ import XCTest
 import CoreLocation
 @testable import NightjarCore
 
-/// Reading a session log, and comparing two of them. The comparison is the part that has to stay
-/// honest: it can measure what the node added, but it cannot claim the node confirmed what the
-/// phone saw, because the two never share an identifier.
+/// Session log reading and comparison. The comparison can measure what a node added, but cannot
+/// claim a node confirmed a phone detection: the two never share an identifier.
 final class SessionTallyTests: XCTestCase {
 
     private func frame(_ t: String = "ble",
@@ -35,7 +34,7 @@ final class SessionTallyTests: XCTestCase {
         ])
         XCTAssertEqual(tally.frames, 4)
         XCTAssertEqual(tally.radios.count, 3)
-        XCTAssertEqual(tally.named.count, 2, "one radio heard twice is one named radio")
+        XCTAssertEqual(tally.named.count, 2, "one radio heard twice counts once")
         XCTAssertEqual(tally.fleets, ["Apple", "Nest"])
         XCTAssertEqual(tally.classes, ["Audio", "Thermostats"])
         XCTAssertEqual(tally.namedRatio, 2.0 / 3.0, accuracy: 0.0001)
@@ -102,20 +101,19 @@ final class SessionTallyTests: XCTestCase {
         XCTAssertTrue(diff.verdict.contains("added 2 named radios"), diff.verdict)
     }
 
-    /// The honest limit, encoded as a test: the same device heard by both sources shares no
-    /// identifier, so it is not "confirmed" — only its name lines up, and only sometimes.
+    /// A device heard by both sources shares no identifier, so it is not new — only its name can
+    /// line up, and only when the device advertises one.
     func testSharedNameIsNotCountedAsNew() throws {
         let phone = SessionTally(frames: [try frame(addr: "ios-uuid-1", name: "DJI Mavic 3")])
         let withNode = SessionTally(frames: [
             try frame(node: "node-1", addr: "60:60:1f:aa:bb:cc", name: "DJI Mavic 3"),
         ])
         let diff = SessionComparison(before: phone, after: withNode)
-        XCTAssertTrue(diff.newNames.isEmpty, "same name, different identity — not new")
-        // And the limit this encodes: the two sources hold two identities for one device, so the
-        // counts cannot be added up. The union is 2; the truth is 1.
+        XCTAssertTrue(diff.newNames.isEmpty, "same name, different identity: not new")
+        // The two sources hold two identities for one device, so the counts must not be summed.
         XCTAssertEqual(diff.radioDelta, 0, "each session counted one radio")
         XCTAssertEqual(phone.radios.union(withNode.radios).count, 2,
-                       "one physical device, two identities — never sum these")
+                       "one device, two identities: the counts must not be summed")
     }
 
     func testVerdictSaysSoWhenTheNodeAddedNothingNameable() throws {

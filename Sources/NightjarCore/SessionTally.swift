@@ -3,8 +3,8 @@ import CoreLocation
 
 /// One line of a session log, as the app writes it.
 ///
-/// The decoder lives here rather than in the probe so that the phone, the Mac and any future
-/// report tool all read a session the same way — and so the reading can be tested.
+/// The decoder lives in the core rather than in the probe so that the phone, the Mac and any
+/// report tool read a session identically, and so the reading can be tested.
 public struct LoggedFrame: Sendable {
     public var isWifi: Bool
     public var node: String
@@ -125,12 +125,11 @@ public struct SessionTally: Sendable {
     }
 }
 
-/// The A/B: the same walk, phone alone versus phone with a sensor node.
+/// Compares two session logs: the same route, phone alone versus phone with a sensor node.
 ///
-/// What this deliberately does *not* claim: that the node and the phone saw the same physical
-/// device. iOS hands the app a per-app UUID and the node a real MAC, so BLE identities cannot be
-/// matched across the two. Overlap is therefore measured on names, counts and fleets — never on
-/// "the node confirmed the phone's finding".
+/// The comparison cannot attribute a node detection to a phone detection. iOS gives the app a
+/// per-app UUID and the node a real MAC, so one physical device has two identities and BLE
+/// results cannot be matched across sources. Overlap is measured on names, counts and fleets.
 public struct SessionComparison: Sendable {
     public let before: SessionTally
     public let after: SessionTally

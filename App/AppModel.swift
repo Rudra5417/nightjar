@@ -54,9 +54,8 @@ struct RadioRow: Identifiable {
 
 /// A place and a moment at which a device was heard.
 ///
-/// The pin is where *you* were, which is the only position a single phone can honestly put on a
-/// map: RSSI gives a range, never a bearing. Walking toward the source and watching the reading
-/// climb is the other half of the job.
+/// The coordinate is where the phone was, not where the device is: RSSI gives a range, not a
+/// bearing, so a single phone cannot locate a BLE peer.
 struct Detection: Identifiable {
     let id = UUID()
     let coordinate: CLLocationCoordinate2D
@@ -86,7 +85,7 @@ enum Trend {
     }
 }
 
-/// A device the co-travel engine believes is moving with you, with its evidence attached.
+/// A device judged to be travelling with the user, with the evidence behind the verdict.
 struct Follower: Identifiable {
     let id: String
     let title: String
@@ -188,8 +187,8 @@ final class AppModel: ObservableObject {
                         strongest: rows.first(where: { !$0.hits.isEmpty })?.title)
     }
 
-    /// One pin per device per place, not one per advertisement — 6,000 frames a minute would
-    /// otherwise become 6,000 identical pins on top of each other.
+    /// One pin per device per place rather than one per advertisement: 6,000 frames a minute would
+    /// otherwise stack 6,000 pins on the same spot.
     private func noteLocation(for key: String, rssi: Int) {
         guard let coordinate = location.current?.coordinate,
               rssi != Observation.unknownRssi, rssi <= 0 else { return }
@@ -256,8 +255,8 @@ final class AppModel: ObservableObject {
             Follower(id: verdict.key, title: title(for: verdict.key), verdict: verdict)
         }
 
-        // Alert once per device per trip. A follower that stops travelling with you is forgotten
-        // so that a later trip can alert again — the second time matters as much as the first.
+        // One alert per device per trip. A device that stops travelling is forgotten so that a
+        // later trip can alert again.
         for follower in followers where !alertedFollowers.contains(follower.id) {
             let posted = follow.notify(title: follower.title,
                                        places: follower.verdict.places,
@@ -278,8 +277,8 @@ final class AppModel: ObservableObject {
         return RadioRow(id: key, observation: obs, hits: hitsByKey[key] ?? []).title
     }
 
-    /// The device you are muting is usually the one you are looking at, so drop it from the
-    /// verdict list immediately rather than waiting for its track to go stale.
+    /// Drops a muted device from the verdict list immediately rather than waiting for its track to
+    /// go stale.
     func muteDevice(_ key: String, title: String) {
         mute.mute(key, title: title)
         followers.removeAll { $0.id == key }
@@ -305,8 +304,8 @@ final class AppModel: ObservableObject {
 
     // MARK: - phone versus node
     //
-    // The live half of the A/B harness. The comparison tool works on finished logs; these numbers
-    // say what the node is contributing while you are still walking.
+    // Per-source counts while a scan is running. The comparison tool works on finished logs; these
+    // numbers report the node's contribution during the walk.
 
     var phoneRadios: Int { scanner.radios.values.filter { $0.sourceNodeId == nil }.count }
     var nodeRadios: Int { scanner.radios.values.filter { $0.sourceNodeId != nil }.count }
@@ -321,7 +320,7 @@ final class AppModel: ObservableObject {
         nodeRadios > 0 ? "phone \(phoneRadios) · node \(nodeRadios)" : "phone only"
     }
 
-    /// Plain-language read on whether the node is earning its place on this walk.
+    /// Plain-language summary of the node's contribution on this walk.
     var nodeVerdict: String {
         guard nodeRadios > 0 else {
             return "No node heard yet. Power it up and it will appear here."

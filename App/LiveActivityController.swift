@@ -4,10 +4,10 @@ import NightjarCore
 
 /// Starts and keeps the Live Activity alive.
 ///
-/// Two jobs: show what's being heard on the lock screen, and — per Apple's Core Bluetooth
-/// overview — keep the app's foreground scanning privileges while it is backgrounded, as long
-/// as a CBManager exists and an activity is running. That second job is the one that matters:
-/// without it, an unfiltered background scan returns nothing.
+/// Two jobs: show the current scan on the lock screen, and retain the app's foreground scanning
+/// privileges while it is backgrounded. Apple's Core Bluetooth overview documents the second: an
+/// instantiated `CBManager` plus a running activity keeps unfiltered scanning with duplicate
+/// reporting. Without it a background scan returns nothing.
 @MainActor
 final class LiveActivityController: ObservableObject {
 

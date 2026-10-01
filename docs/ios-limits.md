@@ -1,7 +1,7 @@
 # What iOS will and will not let Nightjar see
 
-Everything here was checked against Apple's own documentation or a shipping app, not inferred.
-It is the reason the node exists.
+Checked against Apple's documentation and on a physical device. This list is the reason the
+sensor node exists.
 
 ## Hard walls
 
@@ -18,9 +18,9 @@ What *is* available in a foreground scan: local name, service UUIDs, manufacture
 (company id + bytes), service data, Tx power, RSSI. That is enough for payload signature
 matching and co-travel heuristics — not for MAC-based identity.
 
-## Background scanning, and the iOS 26 unlock
+## Background scanning (iOS 26)
 
-Default background rules are hostile: only connectable advertisements, only service UUIDs
+Default background rules: only connectable advertisements, only service UUIDs
 declared in `Info.plist` under `bluetooth-central`, duplicates forced on, results throttled.
 An unfiltered background scan silently returns nothing.
 

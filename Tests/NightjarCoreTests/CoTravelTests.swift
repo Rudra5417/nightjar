@@ -2,13 +2,12 @@ import XCTest
 import CoreLocation
 @testable import NightjarCore
 
-/// The rule that decides something is travelling with you. The failure that matters is a false
-/// alarm — "something is following you" has to mean it — so most of these tests are about
-/// devices that must *not* be flagged.
+/// The co-travel rule. Most cases cover devices that must not be flagged: a false
+/// "something is following you" is worse than a missed one.
 final class CoTravelTests: XCTestCase {
 
-    /// Synthetic coordinates, ~1.5 km apart. Deliberately not anywhere real: a test fixture is a
-    /// published file, and a home latitude and longitude is a home address.
+    /// Synthetic coordinates ~1.5 km apart. Test fixtures are published files, so they carry no
+    /// real location.
     private let home = CLLocationCoordinate2D(latitude: 10.00000, longitude: 20.00000)
     private let cafe = CLLocationCoordinate2D(latitude: 10.01351, longitude: 20.00000)
     private let store = CLLocationCoordinate2D(latitude: 10.02702, longitude: 20.00000)
@@ -29,7 +28,7 @@ final class CoTravelTests: XCTestCase {
         }
         let verdict = try! XCTUnwrap(e.verdict(for: "tv", now: at(41)))
         XCTAssertEqual(verdict.places, 1)
-        XCTAssertFalse(verdict.isFollowing, "a neighbour's television is heard in one place")
+        XCTAssertFalse(verdict.isFollowing, "a device heard in one place is not following")
         XCTAssertTrue(e.followers(now: at(41)).isEmpty)
     }
 
@@ -67,7 +66,7 @@ final class CoTravelTests: XCTestCase {
 
         XCTAssertTrue(try! XCTUnwrap(e.verdict(for: "tag", now: at(25))).isFollowing)
         XCTAssertFalse(try! XCTUnwrap(e.verdict(for: "tag", now: at(90))).isFollowing,
-                       "last heard 66 minutes ago — it stayed behind")
+                       "last heard 66 minutes ago, so it is no longer following")
     }
 
     /// Walking around one building is one place, not four.
@@ -81,7 +80,7 @@ final class CoTravelTests: XCTestCase {
             e.observe(.init(key: "walker", coordinate: coordinate, at: at(Double(index) * 3), rssi: -65))
         }
         let verdict = try! XCTUnwrap(e.verdict(for: "walker", now: at(12)))
-        XCTAssertEqual(verdict.places, 1, "pacing around one spot is still one place")
+        XCTAssertEqual(verdict.places, 1, "sightings within the place radius are one place")
         XCTAssertFalse(verdict.isFollowing)
     }
 
@@ -108,7 +107,7 @@ final class CoTravelTests: XCTestCase {
         }
         let followers = e.followers(now: at(32))
         XCTAssertEqual(Set(followers.map(\.key)), ["weak", "strong"])
-        XCTAssertEqual(followers.first?.key, "strong", "more sightings, same places, ranks first")
+        XCTAssertEqual(followers.first?.key, "strong", "more sightings at the same places ranks first")
     }
 
     func testSpanLabelReadsLikeAClaim() {

@@ -2,14 +2,13 @@ import Foundation
 import UserNotifications
 import NightjarCore
 
-/// Watches the build's own signature and nags before it lapses.
+/// Watches the build's own signature and warns before it lapses.
 ///
-/// A sideloaded app stops opening when its 7-day provisioning profile expires, so the app is
-/// the only thing in the system that can warn you in time — it reads its own
-/// `embedded.mobileprovision`, schedules two local notifications ahead of the expiry, and
-/// shows the countdown on screen.
+/// A sideloaded app stops launching when its 7-day provisioning profile expires, and this app is
+/// the only component that can see that deadline. It parses its own `embedded.mobileprovision`,
+/// schedules two local notifications ahead of expiry, and shows the countdown on screen.
 ///
-/// Local notifications only. Push notifications need a paid developer account; a
+/// Local notifications only: push requires a paid developer account,
 /// `UNTimeIntervalNotificationTrigger` does not.
 @MainActor
 final class ExpiryReminder: ObservableObject {

@@ -3,7 +3,7 @@ import SwiftUI
 import WidgetKit
 import NightjarCore
 
-/// Live Activity: the reason the phone keeps scanning with the screen off.
+/// Live Activity: what keeps the phone scanning with the screen off.
 ///
 /// Apple's Core Bluetooth overview says an app with an instantiated CBManager that has a Live
 /// Activity running keeps its foreground scanning privileges — unfiltered scans and duplicate

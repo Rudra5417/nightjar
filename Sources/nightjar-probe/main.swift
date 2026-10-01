@@ -9,9 +9,8 @@ extension Double {
     }
 }
 
-// nightjar-probe — load the real Fieldwatch catalog pack and classify synthetic radio
-// observations the way iOS would present them, then report what survives the move
-// off Android.
+// nightjar-probe — loads the Fieldwatch catalog pack and classifies synthetic radio
+// observations as iOS presents them, then reports what survives the port from Android.
 //
 // usage: nightjar-probe [path/to/fieldwatch-signatures-v2.json]
 
@@ -218,7 +217,7 @@ for (title, obs) in cases {
     }
 }
 
-// The one thing Android gets and iOS structurally cannot.
+// The capability Android has and iOS cannot: OUI matching against a real BSSID.
 header("the Wi-Fi half (Android only — shown for contrast)")
 let apObservation = Observation(kind: .wifi, mac: "B4:1E:52:11:22:33", name: "Flock-4C21AB", rssi: -61)
 for hit in engine.match(apObservation) {

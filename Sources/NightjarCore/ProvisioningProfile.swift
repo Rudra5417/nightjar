@@ -1,12 +1,11 @@
 import Foundation
 
-/// The 7-day clock a free Apple ID puts on a sideloaded build.
+/// The 7-day expiry a free Apple ID puts on a sideloaded build.
 ///
-/// A development-signed app carries `embedded.mobileprovision` at the root of its bundle.
-/// That file is a CMS (DER) envelope with the actual plist sitting in the middle of it, so
-/// the payload is recovered by slicing between the XML header and `</plist>` rather than by
-/// pulling in a CMS library. Once parsed, the app knows exactly when it will stop opening
-/// and can warn its owner before that happens.
+/// A development-signed app carries `embedded.mobileprovision` in its bundle root: a CMS (DER)
+/// envelope with the plist in the middle. The payload is recovered by slicing between the XML
+/// header and `</plist>`, which avoids a CMS dependency. `remaining` is the app's own clock on
+/// when it will stop launching.
 public struct ProvisioningProfile: Equatable {
 
     public let name: String?

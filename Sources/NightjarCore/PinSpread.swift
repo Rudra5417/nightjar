@@ -1,12 +1,11 @@
 import Foundation
 import CoreLocation
 
-/// Fans out markers that sit on top of each other so they can actually be seen.
+/// Fans out markers that would otherwise be drawn on top of each other.
 ///
-/// This is a display convenience and nothing more: the adjusted coordinates are *not* where
-/// anything was heard. Standing still puts every device you can hear at one point, and sixteen
-/// markers drawn at one point look exactly like no markers at all. The caller is expected to say
-/// so on screen — a map that silently moves pins is worse than a crowded one.
+/// The adjusted coordinates are for display only and are not positions where anything was heard.
+/// A stationary scan puts every device at one coordinate, where N markers are indistinguishable
+/// from none. Callers are expected to disclose on screen that pins have been spread.
 public enum PinSpread {
 
     /// Groups indices whose coordinates sit within `minSeparationMeters` of each other, greedily

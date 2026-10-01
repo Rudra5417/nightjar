@@ -34,15 +34,13 @@ public struct CoTravelVerdict: Equatable {
 
 /// Decides whether something is travelling with you.
 ///
-/// The test is deliberately about *places*, not signal. A device heard at one place is a
-/// neighbour, a router, a camera on a pole — the overwhelming majority of what any scan picks
-/// up. A device heard at three or more distinct places, spread over at least a few minutes, and
-/// still being heard now, is moving with you.
+/// The rule is about places, not signal strength. A device heard at one place is a neighbour, a
+/// router or a fixed camera, which is most of what any scan picks up. Three or more distinct
+/// places, spread over at least `minimumSpan`, and still being heard within `freshness`, counts
+/// as travelling with you.
 ///
-/// One honest limit: iOS hands out a per-app UUID rather than a MAC, and a device that rotates
-/// its address can appear as two identities. So this can under-count (a follower seen as two
-/// devices) but it will not invent one out of address rotation — which is the failure that
-/// matters, because a false "something is following you" is worse than a missed one.
+/// Limitation: iOS exposes a per-app UUID rather than a MAC, so a device that rotates its address
+/// can appear as two identities. This can under-count a follower; it cannot invent one.
 public final class CoTravelEngine {
 
     /// Sightings closer together than this count as the same place, so walking around one

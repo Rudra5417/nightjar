@@ -13,12 +13,11 @@ struct MapPin: Identifiable {
     let isLatest: Bool
 }
 
-/// The screener: where a device has been heard, and whether you're getting closer.
+/// The screener: where a device has been heard, and whether the signal is improving.
 ///
-/// Pins mark the positions *you* occupied when a device was heard, never a computed position for
-/// the device — one radio gives a range, not a bearing, and a fabricated pin is the kind of lie a
-/// map makes easy to believe. When several devices are heard from the same spot their pins are
-/// fanned out so they can be seen at all, and the footnote says so rather than hiding it.
+/// Pins mark positions the phone occupied when a device was heard, never a computed position for
+/// the device: one radio gives a range, not a bearing. Devices heard from the same spot have
+/// their pins fanned out for visibility, and the header states when this has happened.
 struct ScreenerMap: View {
 
     @ObservedObject var model: AppModel
@@ -88,9 +87,8 @@ struct ScreenerMap: View {
                        isLatest: index == points.count - 1)
             }
         }
-        // Nothing selected: one pin per device, at the last place it was heard. Devices heard
-        // from the same spot are fanned out, because sixteen markers on one point look exactly
-        // like no markers at all.
+        // Nothing selected: one pin per device at the last place it was heard. Devices heard from
+        // the same spot are fanned out, since stacked markers are indistinguishable from none.
         let rows = model.rows.filter { !model.points(for: $0.id).isEmpty }
         let fanned = PinSpread.spread(rows.compactMap { model.points(for: $0.id).last?.coordinate })
         return zip(rows, fanned).map { row, coordinate in
@@ -122,16 +120,15 @@ struct ScreenerMap: View {
 
     private func fill(_ pin: MapPin) -> Color {
         guard pin.rssi <= 0 else { return .gray }
-        // Closer = warmer: -95 dBm is the usable edge, -40 is in your pocket.
+        // Warmer = closer: -95 dBm at the usable edge, -40 dBm at close range.
         let t = Double(max(0, min(1, (Double(pin.rssi) + 95) / 55)))
         return Color(hue: 0.52 - 0.52 * t, saturation: 0.85, brightness: 0.95)
     }
 
     // MARK: - camera
 
-    /// Fit the view to the pins instead of trusting `.automatic`. With every pin sitting on one
-    /// point there is no extent to fit, and `.automatic` leaves the map somewhere else entirely —
-    /// which is how a map full of radios looks empty.
+    /// Fits the view to the pins rather than relying on `.automatic`: with every pin on one point
+    /// there is no extent to fit, and `.automatic` leaves the view elsewhere.
     private func fit() -> MapCameraPosition {
         var coords = pins.map(\.coordinate)
         if let me = location.path.last { coords.append(me) }

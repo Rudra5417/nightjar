@@ -4,12 +4,9 @@ import NightjarCore
 
 /// Append-only session log, one JSON object per line, in the app's Documents folder.
 ///
-/// Deliberately boring: newline JSON means a session is greppable, diffable, and can be
-/// replayed into `nightjar-probe` on a Mac without any export tooling.
-///
-/// Every line carries the session mode ("phone" or "node") so an A/B — the same walk with and
-/// without the sensor node — is self-describing months later, without anyone having to remember
-/// which file was which.
+/// Newline JSON keeps a session greppable, diffable and replayable in `nightjar-probe` with no
+/// export tooling. Every line carries the session mode ("phone" or "node") so the two halves of
+/// an A/B run stay labelled.
 @MainActor
 final class SessionLog: ObservableObject {
 
@@ -52,8 +49,7 @@ final class SessionLog: ObservableObject {
     func setMode(_ new: Mode) {
         guard new != mode else { return }
         mode = new
-        // Written as its own line so a session that switched modes mid-walk says so, rather than
-        // silently relabelling everything that came before it.
+        // Written as its own line so a mid-session mode change does not relabel earlier frames.
         write(["t": "mode", "mode": new.rawValue, "ms": Self.nowMs])
     }
 

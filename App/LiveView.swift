@@ -129,7 +129,7 @@ struct LiveView: View {
         }
     }
 
-    /// The one thing on this screen that is a conclusion rather than a reading.
+    /// The only conclusion on this screen rather than a raw reading.
     private var followingSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
@@ -272,7 +272,7 @@ struct LiveView: View {
         .background(ink.opacity(0.95))
     }
 
-    // MARK: - info sheet (everything that used to clutter the header)
+    // MARK: - info sheet
 
     private var infoSheet: some View {
         NavigationStack {

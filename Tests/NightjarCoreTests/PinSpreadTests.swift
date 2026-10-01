@@ -2,12 +2,11 @@ import XCTest
 import CoreLocation
 @testable import NightjarCore
 
-/// Sixteen devices at one coordinate is the normal case when you are standing still — and it
-/// rendered as a single dot, which is indistinguishable from nothing at all.
+/// N devices at one coordinate is the normal case for a stationary scan, and renders as a single
+/// dot indistinguishable from nothing.
 final class PinSpreadTests: XCTestCase {
 
-    /// Synthetic coordinates. A published test fixture must not carry a real home latitude and
-    /// longitude.
+    /// Synthetic coordinates: fixtures are published, so they carry no real location.
     private let home = CLLocationCoordinate2D(latitude: 10.00000, longitude: 20.00000)
 
     func testSingleCoordinateIsLeftAlone() {

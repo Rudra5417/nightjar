@@ -1,12 +1,11 @@
 import Foundation
 import SwiftUI
 
-/// Devices you have told the app to stop showing you.
+/// Devices the user has chosen to hide.
 ///
-/// A scan of a normal room is mostly your own things: your laptop, your earbuds, your television,
-/// your router. They are not findings, they are furniture, and they crowd out the handful of
-/// radios that actually are worth looking at. Muting is per identity key, and the key iOS gives
-/// us is stable for the life of the install, so a mute survives a relaunch.
+/// A scan of an ordinary room is dominated by the user's own equipment, which is not a finding
+/// and crowds out the few radios worth looking at. Muting is by identity key, which iOS keeps
+/// stable for the life of the install, so a mute survives a relaunch.
 @MainActor
 final class MuteList: ObservableObject {
 

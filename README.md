@@ -1,8 +1,8 @@
 # Nightjar
 
-An iPhone app that listens to the radio air around you and says what's there — trackers,
-body cameras, smart glasses, cameras, drones — plus an optional matchbox-sized sensor node
-that fills in the two things iOS refuses to give any app.
+An iPhone app that listens to the radio air around it and identifies what is there — trackers,
+body cameras, smart glasses, cameras, drones — plus an optional matchbox-sized sensor node that
+fills in the two things iOS refuses to give any app.
 
 Passive and local. No account, no server, no ads. Nothing leaves the phone.
 
@@ -22,26 +22,25 @@ Passive and local. No account, no server, no ads. Nothing leaves the phone.
 | Background scanning via Live Activity (iOS 26) | **built** — activity starts and the system accepts it; whether it grants background scan privileges is unverified until it runs on a real phone |
 | Session reports, exports, TAK/CoT, multi-node triangulation | **not yet** |
 
-### About the map
+### The map
 
-A single phone cannot triangulate a BLE device: RSSI gives a range, never a bearing. So the pins
-on the map are the positions **you** occupied when a device was heard, not a guessed location for
-the device. Tapping a radio shows every place you heard it plus a warm/cold trend from the recent
-readings. Standing still produces one cluster — that is the honest answer, not a bug. Real
-position fixing needs the two or three nodes in `firmware/`.
+A single phone cannot triangulate a BLE device: RSSI gives a range, not a bearing. Pins mark the
+positions the phone occupied when a device was heard, never a computed position for the device.
+Selecting a radio shows every place it was heard, plus a trend from the recent readings. A
+stationary scan produces one cluster. Position fixing requires two or more nodes (`firmware/`).
 
-### About the follower alert
+### Follower detection
 
 A device heard at three or more distinct places (clustered at 60 m, so pacing around one building
-is one place), spread over at least five minutes, and still being heard now, is travelling with
-you. Everything else — a neighbour's television, a router, a camera on a pole — is heard in one
-place and is never flagged. Most of the tests for this are about devices that must **not** be
-flagged, because a false "something is following you" is worse than a missed one.
+is one place), spread over at least five minutes, and still being heard, is treated as travelling
+with the user. A device heard at one place — a neighbour's television, a router, a fixed camera —
+is never flagged. Most of the tests cover devices that must **not** be flagged, because a false
+"something is following you" is worse than a missed one.
 
-One limit worth knowing: iOS's per-app UUID can change if a device rotates its address, so a
-follower can appear as two identities. That under-counts. It does not invent followers.
+Limitation: iOS's per-app UUID can change if a device rotates its address, so one follower can
+appear as two identities. This under-counts; it does not invent followers.
 
-## The honest coverage story
+## Catalog coverage
 
 The catalog that ships in the app is Fieldwatch's stock pack: 244 fleets, 6,962 rules. On an
 iPhone alone, **639 of those rules (9.2%) can ever fire** — the rest need a hardware address
@@ -55,29 +54,28 @@ phone + node   6962 / 6962 rules usable  (100.0%)  244/244 fleets reachable
 
 That number is computed from the pack, not asserted: `Sources/nightjar-probe` prints it.
 
-## Does the node earn its place? Walk it twice
+## Measuring the node: run the route twice
 
-The coverage number above is what the *pack* allows. Whether the node actually finds anything on
-your street is a different question, and the only honest way to answer it is to walk the same
-route twice.
+The coverage figure above is what the *pack* allows. Whether the node finds anything on a given
+street is a separate question, and the way to answer it is to walk the same route twice.
 
-1. In the app's ⓘ sheet, tag the walk **Phone only** and walk the route.
+1. Tag the walk **Phone only** in the app's ⓘ sheet and walk the route.
 2. Tag the next walk **Phone + node**, power the node up, walk the same route again.
 
 Session files are named `sit-<timestamp>-phone.jsonl` and `sit-<timestamp>-node.jsonl`, and every
-line carries its mode, so the two halves stay labelled months later. Then, on the Mac:
+line carries its mode, so the two halves stay labelled. Then, on the Mac:
 
 ```bash
 swift run nightjar-probe --ab sit-...-phone.jsonl sit-...-node.jsonl
 ```
 
-It reports what the node added — radios, named radios, fleets, classes, bands — and says plainly
-when the answer is "nothing you could name".
+It reports what the node added — radios, named radios, fleets, classes, bands — and states when
+the answer is that it added nothing nameable.
 
-**What it will not claim.** iOS gives the app a per-app UUID and the node a real MAC, so one
-physical device has two identities and BLE results **cannot** be matched across the two sources.
-Overlap is measured on names, counts and fleets. The union of the two radio counts is not a device
-count — it is an upper bound.
+**What the comparison does not establish.** iOS gives the app a per-app UUID and the node a real
+MAC, so one physical device has two identities and BLE results **cannot** be matched across the
+two sources. Overlap is measured on names, counts and fleets. The union of the two radio counts is
+not a device count — it is an upper bound.
 
 ## Layout
 
@@ -108,7 +106,7 @@ open Nightjar.xcodeproj             # then set your team and run on the phone
 `Nightjar.xcodeproj` is committed so the repo opens without XcodeGen, but `project.yml` wins if
 they disagree — edit the spec, regenerate, commit both.
 
-## Keeping it alive without paying Apple
+## Signing without a paid developer account
 
 A free Apple ID signs a build for **7 days**; after that the app stops opening until it's
 re-signed. Nightjar reads its own `embedded.mobileprovision`, shows the countdown on screen, and
@@ -150,14 +148,13 @@ else about the app cares: it runs offline, anywhere, in airplane mode, in any co
 | SideStep / AltServer on a Mac | ~10 min/week, scheduled | `sudo pmset repeat wakeorpoweron SU 03:00:00` gives the Mac a weekly wake window instead of running it 24/7 |
 | SideStore on the phone | never | refreshes on-device; breaks on iOS point releases |
 
-**Missing the deadline costs no data.** A lapsed signature means the app won't open; the session
-log in Documents survives and is there again after re-signing. If the node is running standalone
-it never notices at all.
+**A lapsed signature costs no data.** The app will not open until it is re-signed; the session log
+in Documents survives and is available again afterwards. A standalone node is unaffected.
 
 The app declares no paid-only capability — no push, no iCloud, no App Groups, no Access Wi-Fi
 Information — so nothing in it stops working on a free account.
 
-## Try the engine without a phone
+## Offline engine check
 
 ```bash
 python3 scripts/make_sample_session.py <pack.json> node-session.sample.jsonl
@@ -176,5 +173,5 @@ come from [OffGridPete/Fieldwatch](https://github.com/OffGridPete/Fieldwatch) �
 © Off Grid Pete LLC; see `NOTICE`. IEEE and Bluetooth SIG assigned-number tables inside the
 pack carry their own terms.
 
-Nightjar is a separate tool. It is receive-only by design: it never transmits on the air beyond
-its own link to your node, never connects to anything it hears, and has no offensive features.
+Nightjar is a separate tool. It is receive-only: it never transmits beyond its own link to a node,
+never connects to anything it hears, and has no offensive capability.

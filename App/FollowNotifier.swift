@@ -2,21 +2,18 @@ import Foundation
 import UserNotifications
 import NightjarCore
 
-/// The one alert that earns the right to interrupt you: something heard at several places, over
-/// time, that is still with you.
+/// Posts a local notification when a device is judged to be travelling with the user.
 ///
-/// Deliberately local notifications — push would need a paid developer account and a server, and
-/// there is nothing here that a server should know. The app is usually in the foreground while
-/// you are listening, so the delegate below makes the banner appear even then; otherwise the
-/// alert would only be visible after you had already stopped looking.
+/// Local notifications only: push requires a paid developer account and a server. The app is
+/// usually in the foreground while listening, so the delegate below presents the banner in the
+/// foreground too; otherwise the alert would arrive only after the user stopped looking.
 @MainActor
 final class FollowNotifier: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
 
     @Published private(set) var enabled: Bool
     @Published private(set) var authorization: UNAuthorizationStatus = .notDetermined
 
-    /// One alert per device per window. A follower is a follower; repeating it every minute
-    /// trains you to ignore it.
+    /// One alert per device per window; repeating it every minute trains the user to ignore it.
     private let cooldown: TimeInterval = 30 * 60
     private var lastAlert: [String: Date] = [:]
 
@@ -43,8 +40,8 @@ final class FollowNotifier: NSObject, ObservableObject, UNUserNotificationCenter
         authorization = settings.authorizationStatus
     }
 
-    /// Turning alerts on is what asks for permission — asking at launch, before there is anything
-    /// to say, is how an app gets denied.
+    /// Enabling alerts is also what requests permission. Asking at launch, before there is
+    /// anything to report, invites a denial.
     @discardableResult
     func setEnabled(_ on: Bool) async -> Bool {
         if !on {
@@ -64,8 +61,7 @@ final class FollowNotifier: NSObject, ObservableObject, UNUserNotificationCenter
         return granted || authorization == .authorized || authorization == .provisional
     }
 
-    /// Returns true if a notification was actually posted, so the caller can say so in the UI
-    /// rather than pretending an alert happened.
+    /// Returns true if a notification was posted, so callers can report the outcome accurately.
     @discardableResult
     func notify(title: String, places: Int, spanLabel: String, key: String) -> Bool {
         guard enabled else { return false }

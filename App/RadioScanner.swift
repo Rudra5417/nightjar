@@ -21,9 +21,8 @@ enum NodeLink {
 ///     unfiltered background scan silently returns nothing. The node keeps scanning; the
 ///     phone just holds the link.
 ///
-/// The iOS 26 upgrade path: start a Live Activity while a CBManager exists and the
-/// unfiltered + duplicates scan keeps running in the background. Next milestone — see
-/// docs/ios-limits.md.
+/// iOS 26 upgrade path: an instantiated `CBManager` plus a running Live Activity retains
+/// unfiltered scanning with duplicate reporting in the background. See docs/ios-limits.md.
 @MainActor
 final class RadioScanner: NSObject, ObservableObject {
 

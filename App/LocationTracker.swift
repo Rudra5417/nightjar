@@ -1,12 +1,11 @@
 import Foundation
 import CoreLocation
 
-/// Where you were when you heard something.
+/// Records where the phone was when something was heard.
 ///
-/// A single phone cannot triangulate a BLE device — RSSI is a range, not a bearing. What it can
-/// do is record the points along your path where a device was heard, which is what makes the
-/// map honest: the pins are *your* positions, not the device's. Walking toward the source and
-/// watching RSSI climb is the other half.
+/// A single phone cannot triangulate a BLE device: RSSI is a range, not a bearing. What it can
+/// record is the path along which a device was heard, which is what the map plots. Pins are the
+/// phone's positions, never the device's.
 @MainActor
 final class LocationTracker: NSObject, ObservableObject {
 

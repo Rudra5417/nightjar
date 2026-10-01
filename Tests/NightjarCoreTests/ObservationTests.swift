@@ -1,9 +1,8 @@
 import XCTest
 @testable import NightjarCore
 
-/// CoreBluetooth hands back 127 when it has no reading for a peripheral — seen live on an
-/// iPhone 15 Pro, where a MacBook Air, AirPods and a DJI-tagged device all arrived at
-/// "127 dBm" and sorted above every real signal.
+/// CoreBluetooth returns 127 when it has no reading for a peripheral. It is a sentinel, not a
+/// measurement, and must not be sorted as one.
 final class ObservationTests: XCTestCase {
 
     func testUnknownRssiIsNotTreatedAsAMeasurement() {
@@ -15,7 +14,7 @@ final class ObservationTests: XCTestCase {
         XCTAssertTrue(real.rssiIsKnown)
         XCTAssertEqual(real.sortableRssi, -72)
 
-        // The whole point: a real weak signal must outrank an unknown reading.
+        // A real weak signal must outrank an unknown reading.
         XCTAssertGreaterThan(real.sortableRssi, unknown.sortableRssi)
     }
 
