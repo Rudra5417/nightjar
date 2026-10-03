@@ -18,6 +18,7 @@
 		9321F3E73C0DDEEA753C4674 /* NightjarCore in Frameworks */ = {isa = PBXBuildFile; productRef = AEE76CA542C7B930B4792449 /* NightjarCore */; };
 		95B4651EE8F435B691A73E99 /* NightjarCore in Frameworks */ = {isa = PBXBuildFile; productRef = BC2B0A40C0A30FF215891DF6 /* NightjarCore */; };
 		B78BC704090717615B438301 /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9047372EC5D99D07EC50CA15 /* LiveView.swift */; };
+		BFE8FB80C66FFB5E4BFB0604 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ED429531CC798703A9014C2 /* Assets.xcassets */; };
 		CCCD5FA22FACBBB54D810FCD /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A40E42DD0653B1BABF332E /* Catalog.swift */; };
 		DDC5F5262FBC00DE09402DD3 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B71C5E1AA5517E492F2345 /* AppModel.swift */; };
 		E631CE1FE53582DBCCA1487F /* ExpiryReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658BBC7248BA9401E1DCFBD7 /* ExpiryReminder.swift */; };
@@ -59,6 +60,7 @@
 		34A9B709245ADAACF37DFAEA /* SessionLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLog.swift; sourceTree = "<group>"; };
 		3DDDE43A7D6E1AE030D766C1 /* nightjar */ = {isa = PBXFileReference; lastKnownFileType = folder; name = nightjar; path = .; sourceTree = SOURCE_ROOT; };
 		658BBC7248BA9401E1DCFBD7 /* ExpiryReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiryReminder.swift; sourceTree = "<group>"; };
+		6ED429531CC798703A9014C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E270C05DD31FC88125B26D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8E77DC85A158E3483E3C819F /* FollowNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowNotifier.swift; sourceTree = "<group>"; };
 		9047372EC5D99D07EC50CA15 /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 			children = (
 				2B25701F41AC5A30F65EE2EC /* Resources */,
 				B9B71C5E1AA5517E492F2345 /* AppModel.swift */,
+				6ED429531CC798703A9014C2 /* Assets.xcassets */,
 				28A40E42DD0653B1BABF332E /* Catalog.swift */,
 				658BBC7248BA9401E1DCFBD7 /* ExpiryReminder.swift */,
 				8E77DC85A158E3483E3C819F /* FollowNotifier.swift */,
@@ -246,6 +249,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFE8FB80C66FFB5E4BFB0604 /* Assets.xcassets in Resources */,
 				25CB18CC807532F42DA39134 /* fieldwatch-signatures-v2.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

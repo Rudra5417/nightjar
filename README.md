@@ -84,6 +84,7 @@ Sources/NightjarCore/     the engine: models, rule matching, payload decoder, no
 Sources/nightjar-probe/   CLI: replay a node session, print coverage, run on macOS
 App/                     the iOS app (SwiftUI + CoreBluetooth)
 firmware/                ESP32 sensor node (see firmware/README.md)
+scripts/                 device build and install, sample session, app icon generator
 docs/                    what iOS will and will not let an app see
 project.yml              XcodeGen spec — the source of truth for the Xcode project
 ```
@@ -102,6 +103,10 @@ swift run nightjar-probe --profile <SomeApp.app>                 # sideload expi
 xcodegen generate                  # regenerates Nightjar.xcodeproj from project.yml
 open Nightjar.xcodeproj             # then set your team and run on the phone
 ```
+
+The app icon is drawn by `scripts/make-app-icon.swift`, not stored as an opaque binary: rerun it
+to regenerate the PNG in the asset catalog, at any size, and `scripts/check-app-icon.swift` samples
+the result to confirm the mark landed where it should.
 
 `Nightjar.xcodeproj` is committed so the repo opens without XcodeGen, but `project.yml` wins if
 they disagree — edit the spec, regenerate, commit both.
