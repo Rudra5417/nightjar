@@ -15,11 +15,12 @@ struct LiveView: View {
 
     @State private var tab: Tab = .live
     @State private var showInfo = false
+    @State private var evidence: RadioRow?
 
-    private let cyan = Color(red: 0.176, green: 0.831, blue: 0.969)   // #2dd4f7
-    private let violet = Color(red: 0.545, green: 0.361, blue: 0.965) // #8b5cf6
-    private let amber = Color(red: 1.0, green: 0.62, blue: 0.15)
-    private let ink = Color(red: 0.04, green: 0.05, blue: 0.07)
+    private let cyan = Palette.cyan
+    private let violet = Palette.violet
+    private let amber = Palette.amber
+    private let ink = Palette.ink
 
     var body: some View {
         ZStack {
@@ -43,6 +44,12 @@ struct LiveView: View {
         }
         .preferredColorScheme(.dark)
         .sheet(isPresented: $showInfo) { infoSheet }
+        .sheet(item: $evidence) { row in
+            EvidenceView(model: model, row: row) {
+                evidence = nil
+                open(row)
+            }
+        }
     }
 
     // MARK: - header
@@ -103,7 +110,7 @@ struct LiveView: View {
                 LazyVStack(spacing: 8) {
                     if !model.followers.isEmpty { followingSection }
                     ForEach(model.rows) { row in
-                        Button { open(row) } label: { rowView(row) }
+                        Button { evidence = row } label: { rowView(row) }
                             .buttonStyle(.plain)
                             .contextMenu {
                                 Button {
@@ -114,9 +121,7 @@ struct LiveView: View {
                             }
                     }
                     if model.rows.isEmpty {
-                        Text(model.filter == .named
-                             ? "Nothing named yet. Switch to All to see everything being heard."
-                             : "Nothing heard yet. Bring the phone near something that talks.")
+                        Text(emptyMessage)
                             .font(.system(size: 13))
                             .foregroundStyle(.white.opacity(0.4))
                             .multilineTextAlignment(.center)
@@ -192,6 +197,7 @@ struct LiveView: View {
                     .foregroundStyle(row.hits.isEmpty ? .white.opacity(0.45) : cyan)
             }
             HStack(spacing: 6) {
+                if let tier = row.confidence { tierChip(tier) }
                 ForEach(row.primaryBadges, id: \.self) { chip($0, strong: true) }
                 if row.hits.isEmpty { chip("unmatched", strong: false) }
                 Spacer()
@@ -234,9 +240,30 @@ struct LiveView: View {
             .foregroundStyle(strong ? cyan : .white.opacity(0.6))
     }
 
+    /// The confidence tier, so a hedged claim looks hedged on the list itself.
+    private func tierChip(_ tier: Confidence) -> some View {
+        Text(tier.label.uppercased())
+            .font(.system(size: 10, weight: .black, design: .monospaced))
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(Capsule().fill(Palette.colour(for: tier).opacity(0.20)))
+            .foregroundStyle(Palette.colour(for: tier))
+    }
+
     private func open(_ row: RadioRow) {
         model.selectedKey = row.id
         tab = .map
+    }
+
+    private var emptyMessage: String {
+        switch model.filter {
+        case .all:
+            return "Nothing heard yet. Bring the phone near something that talks."
+        case .possible:
+            return "Nothing matched yet. All shows everything being heard."
+        case .named:
+            return "Nothing identified yet. Possible shows the hedged matches, All shows everything heard."
+        }
     }
 
     // MARK: - bottom bar

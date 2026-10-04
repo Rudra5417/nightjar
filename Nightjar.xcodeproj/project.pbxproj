@@ -17,7 +17,9 @@
 		8B8A0AC9D6148CF0E1CA6ECE /* LocationTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8A4ACA378D7C073B153C06 /* LocationTracker.swift */; };
 		9321F3E73C0DDEEA753C4674 /* NightjarCore in Frameworks */ = {isa = PBXBuildFile; productRef = AEE76CA542C7B930B4792449 /* NightjarCore */; };
 		95B4651EE8F435B691A73E99 /* NightjarCore in Frameworks */ = {isa = PBXBuildFile; productRef = BC2B0A40C0A30FF215891DF6 /* NightjarCore */; };
+		9918B3FB0A7E22A09CF2BB21 /* EvidenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105E8030F6B9F35E63474918 /* EvidenceView.swift */; };
 		B78BC704090717615B438301 /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9047372EC5D99D07EC50CA15 /* LiveView.swift */; };
+		BDD36A631BBBAEE8E15AE68F /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE287FC0BBB20C5126FC8939 /* Palette.swift */; };
 		BFE8FB80C66FFB5E4BFB0604 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ED429531CC798703A9014C2 /* Assets.xcassets */; };
 		CCCD5FA22FACBBB54D810FCD /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A40E42DD0653B1BABF332E /* Catalog.swift */; };
 		DDC5F5262FBC00DE09402DD3 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B71C5E1AA5517E492F2345 /* AppModel.swift */; };
@@ -53,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		0DDBE505500B4BDD996F1883 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
+		105E8030F6B9F35E63474918 /* EvidenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceView.swift; sourceTree = "<group>"; };
 		129EE517F05F145BA8AAB683 /* fieldwatch-signatures-v2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "fieldwatch-signatures-v2.json"; sourceTree = "<group>"; };
 		234389C5CB0800A5A6C25F32 /* RadioScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioScanner.swift; sourceTree = "<group>"; };
 		28A40E42DD0653B1BABF332E /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalog.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 		BB8A4ACA378D7C073B153C06 /* LocationTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTracker.swift; sourceTree = "<group>"; };
 		C75A4C7A519769C849615C1E /* NightjarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightjarApp.swift; sourceTree = "<group>"; };
 		C9EE3A77BC6A004B507ADCD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CE287FC0BBB20C5126FC8939 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		F3883C2652FEB03B79B740C1 /* NightjarWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = NightjarWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -145,6 +149,7 @@
 				B9B71C5E1AA5517E492F2345 /* AppModel.swift */,
 				6ED429531CC798703A9014C2 /* Assets.xcassets */,
 				28A40E42DD0653B1BABF332E /* Catalog.swift */,
+				105E8030F6B9F35E63474918 /* EvidenceView.swift */,
 				658BBC7248BA9401E1DCFBD7 /* ExpiryReminder.swift */,
 				8E77DC85A158E3483E3C819F /* FollowNotifier.swift */,
 				C9EE3A77BC6A004B507ADCD0 /* Info.plist */,
@@ -153,6 +158,7 @@
 				BB8A4ACA378D7C073B153C06 /* LocationTracker.swift */,
 				A79A5AE8BF0412E4E4464AE8 /* MuteList.swift */,
 				C75A4C7A519769C849615C1E /* NightjarApp.swift */,
+				CE287FC0BBB20C5126FC8939 /* Palette.swift */,
 				234389C5CB0800A5A6C25F32 /* RadioScanner.swift */,
 				A2B607AE27913B857A48D186 /* ScreenerMap.swift */,
 				34A9B709245ADAACF37DFAEA /* SessionLog.swift */,
@@ -271,6 +277,7 @@
 			files = (
 				DDC5F5262FBC00DE09402DD3 /* AppModel.swift in Sources */,
 				CCCD5FA22FACBBB54D810FCD /* Catalog.swift in Sources */,
+				9918B3FB0A7E22A09CF2BB21 /* EvidenceView.swift in Sources */,
 				E631CE1FE53582DBCCA1487F /* ExpiryReminder.swift in Sources */,
 				355E44EA66E4D6E7D5BDC243 /* FollowNotifier.swift in Sources */,
 				E745EDEDDB55CEBC0727ED46 /* LiveActivityController.swift in Sources */,
@@ -278,6 +285,7 @@
 				8B8A0AC9D6148CF0E1CA6ECE /* LocationTracker.swift in Sources */,
 				F3A85207971E7E96C1F92BD8 /* MuteList.swift in Sources */,
 				4D8713A9D9D3FE5B18C2261B /* NightjarApp.swift in Sources */,
+				BDD36A631BBBAEE8E15AE68F /* Palette.swift in Sources */,
 				6FD97A1D490DB05EC4265A9C /* RadioScanner.swift in Sources */,
 				1833CE1278B9D8AF6A7A21DE /* ScreenerMap.swift in Sources */,
 				65CA29DD5625E447A1CEBEE4 /* SessionLog.swift in Sources */,

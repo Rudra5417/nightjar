@@ -15,6 +15,11 @@ This product includes software and data developed by Off Grid Pete LLC:
       App/Resources/fieldwatch-signatures-v2.json (catalog version 88, 244 fleets, 6962 rules)
     - the payload decode spec format (offset/type/endian/bits/enum/when fields)
 
+  Deliberate divergences, documented in Sources/NightjarCore:
+    - `mac` is optional everywhere, because iOS never exposes a peer radio's hardware address
+    - NAME_CONTAINS matches whole words rather than any substring
+    - every match carries a confidence tier derived from the kind of rule that fired
+
 AndroidX, Kotlin and related libraries in the original project remain Apache-2.0. IEEE and
 Bluetooth SIG assigned-number tables embedded in the catalog pack are subject to those
 organizations' own terms.

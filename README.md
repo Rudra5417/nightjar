@@ -40,6 +40,29 @@ is never flagged. Most of the tests cover devices that must **not** be flagged, 
 Limitation: iOS's per-app UUID can change if a device rotates its address, so one follower can
 appear as two identities. This under-counts; it does not invent followers.
 
+### Confidence
+
+A catalog rule is not a statement of identity, so every match carries how much it actually
+establishes:
+
+| Tier | What matched | Example |
+|---|---|---|
+| **identified** | an identifier belonging to the device: a service UUID, a payload prefix, an OUI | `SERVICE_UUID FD5A` — the tag's own service |
+| **likely** | a name, matched on whole words | `NAME_CONTAINS "SmartTag"` |
+| **possible** | a vendor id, a radio type, a hidden network | `MANUFACTURER_ID 117` — Samsung, shared by every Samsung product |
+
+Two rules of *different* classes agreeing — a name plus a vendor id — raise the tier to **likely**.
+Two rules of the same class do not: a name matching twice is one piece of evidence stated twice.
+Only an identifier reaches **identified**, because a name can be changed by whoever owns the device.
+
+This is not decoration. On a real walk, `NAME_CONTAINS "DJI"` as a bare substring reported a Windows
+host named `DESKTOP-KOQDJIH` as a drone, and `MANUFACTURER_ID 117` on its own reported a Samsung
+television as a tracker. `NAME_CONTAINS` now matches whole words only — a deliberate divergence from
+Fieldwatch, and the reason a glob keeps its substring meaning, since `*DJI*` states that intent
+explicitly. A bare vendor id is reported as **possible** instead of being mixed in with the devices
+the app can stand behind, which is why `Possible` is its own filter. Every claim is inspectable:
+tap any row for the rule that fired, what that kind of rule can prove, and the raw advertisement.
+
 ## Catalog coverage
 
 The catalog that ships in the app is Fieldwatch's stock pack: 244 fleets, 6,962 rules. On an

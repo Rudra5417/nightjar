@@ -47,6 +47,11 @@ struct RadioRow: Identifiable {
         return Double(max(0, min(1, (Double(observation.rssi) + 100) / 70)))
     }
 
+    /// The strongest claim any matched fleet makes about this radio; nil when nothing matched.
+    var confidence: Confidence? {
+        hits.map { $0.confidence }.max()
+    }
+
     var rssiLabel: String {
         observation.rssiIsKnown ? "\(observation.rssi)" : "—"
     }
@@ -99,8 +104,12 @@ struct Follower: Identifiable {
 @MainActor
 final class AppModel: ObservableObject {
 
+    /// What the list shows. "Named" means a claim worth making: an identifier or a name matched.
+    /// A bare vendor id is not one, so it is offered under "Possible" rather than mixed in with
+    /// the devices the app can actually stand behind.
     enum Filter: String, CaseIterable, Identifiable {
         case named = "Named"
+        case possible = "Possible"
         case all = "All"
         var id: String { rawValue }
     }
@@ -211,14 +220,24 @@ final class AppModel: ObservableObject {
             .map { obs in
                 RadioRow(id: obs.identityKey, observation: obs, hits: hitsByKey[obs.identityKey] ?? [])
             }
-            .filter { filter == .all || !$0.hits.isEmpty }
+            .filter { row in
+                switch filter {
+                case .all: return true
+                case .possible: return !row.hits.isEmpty
+                case .named: return (row.confidence ?? .possible) >= .probable
+                }
+            }
         .sorted { lhs, rhs in
             if lhs.hits.isEmpty != rhs.hits.isEmpty { return !lhs.hits.isEmpty }
             return lhs.observation.sortableRssi > rhs.observation.sortableRssi
         }
     }
 
-    var namedCount: Int { scanner.radios.values.filter { hitsByKey[$0.identityKey] != nil }.count }
+    var namedCount: Int {
+        scanner.radios.values.filter {
+            (hitsByKey[$0.identityKey]?.map { $0.confidence }.max() ?? .possible) >= .probable
+        }.count
+    }
 
     var selectedRow: RadioRow? { rows.first { $0.id == selectedKey } }
 

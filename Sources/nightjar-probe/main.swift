@@ -209,7 +209,8 @@ for (title, obs) in cases {
     } else {
         for hit in hits {
             let cls = hit.fleet.kind?.label ?? "-"
-            line("  -> \(hit.fleet.name)  [\(cls)]  via \(hit.matchedRules.map { "\($0.kind.rawValue)" }.joined(separator: ", "))")
+            let via = hit.matchedRules.map { "\($0.kind.rawValue)=\($0.pattern)" }.joined(separator: ", ")
+            line("  -> \(hit.fleet.name)  [\(cls)]  \(hit.confidence.label)  via \(via)")
             for d in hit.decoded {
                 line("       decode \(d.label) = \(d.value)\(d.note.map { " (\($0))" } ?? "")")
             }
@@ -272,8 +273,8 @@ if FileManager.default.fileExists(atPath: nodeURL.path),
         let extra = [obs.band.map { "\($0)GHz" }, obs.channel.map { "ch\($0)" }, obs.addressType].compactMap { $0 }.joined(separator: " ")
         line("• [\(where_)] \(obs.kind.rawValue) \(addr) \(extra) rssi \(obs.rssi) \"\(obs.name)\"")
         for hit in hits {
-            let via = hit.matchedRules.map { $0.kind.rawValue }.joined(separator: ", ")
-            line("    -> \(hit.fleet.name)  [\(hit.fleet.kind?.label ?? "-")]  via \(via)")
+            let via = hit.matchedRules.map { "\($0.kind.rawValue)=\($0.pattern)" }.joined(separator: ", ")
+            line("    -> \(hit.fleet.name)  [\(hit.fleet.kind?.label ?? "-")]  \(hit.confidence.label)  via \(via)")
         }
         if hits.isEmpty { line("    -> no signature") }
     }

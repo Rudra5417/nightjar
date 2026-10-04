@@ -2,10 +2,14 @@ import Foundation
 
 /// Signature matching engine, ported from Fieldwatch's SignatureEngine.kt.
 ///
-/// Two deliberate differences from the Android original:
+/// Three deliberate differences from the Android original:
 ///  1. `mac` is optional everywhere — on iOS it is never present for a peer radio.
 ///  2. A rule that needs a hardware address simply cannot fire; it is reported as
 ///     "platform-unavailable" instead of silently never matching.
+///  3. `NAME_CONTAINS` matches whole words, and every hit carries a `Confidence`. Both exist for
+///     the same reason: as a bare substring, that rule reported a Windows host called
+///     `DESKTOP-KOQDJIH` as a DJI drone, and as a bare company id it reported a Samsung television
+///     as a tracker. A scanner that overclaims is one its user learns to ignore.
 public struct SignatureEngine {
     public let catalog: CatalogFile
     private let enabledFleets: [Fleet]
@@ -43,9 +47,26 @@ public struct SignatureEngine {
         var hits: [FleetHit] = []
         for fleet in enabledFleets where fleetMatches(fleet, obs) {
             let matched = fleet.rules.filter { $0.enabled && ruleHits($0, obs) }
-            hits.append(FleetHit(fleet: fleet, matchedRules: matched, decoded: decode(fleet: fleet, obs: obs)))
+            hits.append(FleetHit(fleet: fleet,
+                                 matchedRules: matched,
+                                 decoded: decode(fleet: fleet, obs: obs),
+                                 confidence: SignatureEngine.confidence(matched)))
         }
         return hits.sorted { $0.fleet.name < $1.fleet.name }
+    }
+
+    /// The strength of a fleet's match.
+    ///
+    /// A rule that belongs to the device settles it: a service UUID or a payload prefix is written
+    /// by the device's own firmware and cannot be renamed. Failing that, two *different classes* of
+    /// evidence agreeing — a name and a vendor id — is worth more than either alone. Anything less
+    /// stays at the strength of its single strongest rule, which for a bare company id is only
+    /// "possible", because every product that vendor makes shares it.
+    public static func confidence(_ matched: [MatchRule]) -> Confidence {
+        guard !matched.isEmpty else { return .possible }
+        if matched.contains(where: { $0.kind.isIdentifying }) { return .certain }
+        if Set(matched.map { $0.kind.evidenceClass }).count >= 2 { return .probable }
+        return matched.map { $0.kind.confidence }.max() ?? .possible
     }
 
     public func fleetMatches(_ fleet: Fleet, _ obs: Observation) -> Bool {
@@ -64,7 +85,7 @@ public struct SignatureEngine {
             return TextMatch.hexOnly(mac).hasPrefix(TextMatch.hexOnly(rule.text))
 
         case .nameContains:
-            return !obs.name.isEmpty && TextMatch.contains(obs.name, rule.text)
+            return !obs.name.isEmpty && TextMatch.containsWord(obs.name, rule.text)
 
         case .nameGlob:
             return !obs.name.isEmpty && TextMatch.glob(obs.name, rule.text)

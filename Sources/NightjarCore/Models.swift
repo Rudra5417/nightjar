@@ -320,6 +320,18 @@ public struct FleetHit: Sendable {
     public var fleet: Fleet
     public var matchedRules: [MatchRule]
     public var decoded: [DecodedField]
+    /// How much the matched rules actually establish. See `Confidence`.
+    public var confidence: Confidence
+
+    public init(fleet: Fleet,
+                matchedRules: [MatchRule],
+                decoded: [DecodedField],
+                confidence: Confidence) {
+        self.fleet = fleet
+        self.matchedRules = matchedRules
+        self.decoded = decoded
+        self.confidence = confidence
+    }
 }
 
 public struct DecodedField: Sendable {
@@ -330,12 +342,166 @@ public struct DecodedField: Sendable {
     public var emphasized: Bool
 }
 
+// MARK: - Confidence
+
+/// How much a match actually establishes.
+///
+/// A catalog rule is not a statement of identity. `MANUFACTURER_ID 117` says a radio was made by
+/// Samsung; it does not say that a television is a tracker. `NAME_CONTAINS "DJI"` says those three
+/// letters appear in an advertised name, which is equally true of a Windows host called
+/// `DESKTOP-KOQDJIH`. Reporting both at the same weight as `SERVICE_UUID FD5A` is how a scanner
+/// teaches its user to ignore it, so every hit carries the strength of the evidence behind it.
+public enum Confidence: Int, Codable, Sendable, Comparable, CaseIterable {
+    /// A vendor id, a radio type, or a hidden network. Describes a category, not a product.
+    case possible = 0
+    /// A name matching a product family, on whole words.
+    case probable = 1
+    /// An identifier belonging to the device itself: a service UUID, a payload prefix, an OUI.
+    case certain = 2
+
+    public static func < (lhs: Confidence, rhs: Confidence) -> Bool { lhs.rawValue < rhs.rawValue }
+
+    public var label: String {
+        switch self {
+        case .possible: return "possible"
+        case .probable: return "likely"
+        case .certain: return "identified"
+        }
+    }
+
+    /// What the tier claims, in one sentence, for the evidence view.
+    public var claim: String {
+        switch self {
+        case .possible:
+            return "One weak rule matched. That narrows the vendor or the category, not the product."
+        case .probable:
+            return "A name matched as a whole word. That identifies the product family, and a name can be changed by whoever owns the device."
+        case .certain:
+            return "An identifier belonging to the device itself matched. Changing a name cannot fake that."
+        }
+    }
+
+    public func promoted() -> Confidence {
+        switch self {
+        case .possible: return .probable
+        case .probable, .certain: return .certain
+        }
+    }
+}
+
+/// The kind of evidence a rule represents. Two rules of the same class are the same evidence
+/// twice, not corroboration: a name match agreeing with another name match says nothing new.
+public enum EvidenceClass: Sendable {
+    /// Belongs to the device: a service UUID, a payload prefix, a hardware address.
+    case identifier
+    /// A name the device advertises, which its owner can change.
+    case name
+    /// A vendor id, a radio type, a hidden network — a category, not a product.
+    case weak
+}
+
+extension RuleKind {
+    public var evidenceClass: EvidenceClass {
+        switch self {
+        case .serviceUuid, .serviceData, .manufacturerData, .oui, .macPrefix, .vendorIeOui:
+            return .identifier
+        case .nameContains, .nameGlob:
+            return .name
+        case .manufacturerId, .radioKind, .hiddenSsid:
+            return .weak
+        }
+    }
+
+    /// What a match on this rule kind establishes on its own.
+    public var confidence: Confidence {
+        switch evidenceClass {
+        case .identifier: return .certain
+        case .name: return .probable
+        case .weak: return .possible
+        }
+    }
+
+    /// Whether a match on this kind identifies a product without help.
+    public var isIdentifying: Bool { evidenceClass == .identifier }
+}
+
+extension MatchRule {
+    /// The rule's own pattern, rendered for display.
+    public var pattern: String {
+        switch kind {
+        case .manufacturerId:
+            return String(format: "0x%04X (%d)", companyId, companyId)
+        case .manufacturerData:
+            return dataPrefixHex.isEmpty
+                ? "company \(companyId)"
+                : "company \(companyId), payload \(dataPrefixHex)"
+        case .serviceData:
+            let service = text.isEmpty ? "any service" : text
+            return dataPrefixHex.isEmpty ? service : "\(service), payload \(dataPrefixHex)"
+        case .radioKind:
+            return radio?.rawValue ?? "either radio"
+        case .hiddenSsid:
+            return "hidden network"
+        default:
+            return text
+        }
+    }
+
+    /// What a match on this rule can and cannot establish, in one sentence.
+    public var strengthNote: String {
+        switch kind {
+        case .manufacturerId:
+            return "A Bluetooth company id identifies the vendor, and every product that vendor makes shares it."
+        case .manufacturerData:
+            return "A payload prefix is written by the device's own firmware, so it identifies the product."
+        case .serviceUuid:
+            return "A service UUID is assigned to a product or a protocol, and the device advertises it itself."
+        case .serviceData:
+            return "A service-data prefix comes from the device's own payload."
+        case .nameContains:
+            return "Matched on whole words only: \"DJI\" matches \"DJI Mavic\" but not \"KOQDJIH\"."
+        case .nameGlob:
+            return "A name pattern. Whoever owns the device can change its name."
+        case .oui:
+            return "An OUI identifies the manufacturer, from a real hardware address."
+        case .macPrefix:
+            return "A MAC prefix identifies the manufacturer, from a real hardware address."
+        case .vendorIeOui:
+            return "A vendor information element, written into the device's own beacon."
+        case .radioKind:
+            return "A radio type on its own does not identify anything."
+        case .hiddenSsid:
+            return "A hidden network on its own does not identify anything."
+        }
+    }
+}
+
 // MARK: - Text matching (mirrors Fieldwatch TextMatch)
 
 public enum TextMatch {
-    public static func contains(_ hay: String, _ needle: String) -> Bool {
-        guard !needle.isEmpty else { return false }
-        return hay.range(of: needle, options: [.caseInsensitive]) != nil
+    /// Whole-word contains: the needle must be bounded by non-alphanumeric characters on both
+    /// sides. "DJI" matches "DJI Mavic 3" and "Mavic (DJI)"; it does not match "KOQDJIH".
+    ///
+    /// Deliberate divergence from Fieldwatch, whose NAME_CONTAINS is a bare substring — the
+    /// reason a Windows host named DESKTOP-KOQDJIH was reported as a drone. A glob keeps its
+    /// substring meaning, because `*DJI*` states that intent explicitly.
+    public static func containsWord(_ hay: String, _ needle: String) -> Bool {
+        guard !needle.isEmpty, !hay.isEmpty else { return false }
+        var search = hay.startIndex..<hay.endIndex
+        while let found = hay.range(of: needle, options: [.caseInsensitive], range: search) {
+            let before = found.lowerBound == hay.startIndex ? nil : hay[hay.index(before: found.lowerBound)]
+            let after = found.upperBound == hay.endIndex ? nil : hay[found.upperBound]
+            let leftOK = before.map { !isWordCharacter($0) } ?? true
+            let rightOK = after.map { !isWordCharacter($0) } ?? true
+            if leftOK && rightOK { return true }
+            guard found.lowerBound < hay.endIndex else { break }
+            search = hay.index(after: found.lowerBound)..<hay.endIndex
+        }
+        return false
+    }
+
+    private static func isWordCharacter(_ character: Character) -> Bool {
+        character.isLetter || character.isNumber
     }
 
     public static func glob(_ text: String, _ pattern: String) -> Bool {

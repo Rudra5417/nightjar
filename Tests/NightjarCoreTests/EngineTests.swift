@@ -6,13 +6,7 @@ final class EngineTests: XCTestCase {
 
     override class func setUp() {
         super.setUp()
-        let path = ProcessInfo.processInfo.environment["FIELDWATCH_CATALOG"]
-            ?? "\(NSHomeDirectory())/.hermes/cache/scratch/fw/Fieldwatch/dist/fieldwatch-signatures-v2.json"
-        guard FileManager.default.fileExists(atPath: path),
-              let loaded = try? SignatureEngine.load(url: URL(fileURLWithPath: path)) else {
-            return
-        }
-        engine = loaded
+        engine = TestCatalog.load()
     }
 
     private func requireEngine() throws -> SignatureEngine {
